@@ -1,3 +1,12 @@
 import { Routes } from '@angular/router';
+import { MeritListComponent } from './components/merit-list/merit-list.component';
+import { MeritDetailComponent } from './components/merit-detail/merit-detail.component';
+import { MeritFormComponent } from './components/merit-form/merit-form.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'merits', pathMatch: 'full' },
+  { path: 'merits', component: MeritListComponent },
+  { path: 'merits/new', component: MeritFormComponent },
+  { path: 'merits/:id', component: MeritDetailComponent },
+  { path: 'merits/:id/edit', component: MeritFormComponent },
+];

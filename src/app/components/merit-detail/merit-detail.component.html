@@ -1,1 +1,24 @@
-<p>merit-detail works!</p>
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<div *ngIf="merit">
+  <div class="detail-container">
+    <div class="header-row">
+      <h2>{{ merit?.title }}</h2>
+    </div>
+    <h3 class="merit-date">{{ merit.date | date : "mediumDate" }}</h3>
+    <p class="description">{{ merit?.description }}</p>
+
+    <app-image-gallery [images]="merit.image_urls"></app-image-gallery>
+
+    <div class="button-row">
+      <button mat-stroked-button color="primary" (click)="onBack()">
+        Back
+      </button>
+      <button mat-flat-button color="accent" (click)="onEdit()">Edit</button>
+      <button mat-raised-button color="warn" (click)="onDelete()">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>

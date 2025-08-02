@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SupabaseService } from '../../services/supabase.service';
 import { Merit } from '../../models/merits.model';
+import { Router } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -38,7 +39,7 @@ export class MeritListComponent {
   pageIndex = 0;
   pageSizeOptions = [5, 20, 30, 40, 50, 100];
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(private supabase: SupabaseService, private router: Router) {}
 
   async ngOnInit() {
     console.log('MeritListComponent loaded');
@@ -86,5 +87,9 @@ export class MeritListComponent {
 
   applyFilters() {
     this.pageIndex = 0;
+  }
+
+  viewDetail(id: string) {
+    this.router.navigate(['/merits', parseInt(id)]);
   }
 }

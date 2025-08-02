@@ -1,1 +1,64 @@
-<p>merit-form works!</p>
+<div class="form-container" *ngIf="!loading; else loadingTemplate">
+  <form (ngSubmit)="onSubmit()" #meritForm="ngForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput required [(ngModel)]="merit.title" name="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="merit.description"
+        name="description"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [(ngModel)]="merit.date"
+        name="date"
+        required
+        [value]="merit.date ? (merit.date | date : 'yyyy-MM-dd') : ''"
+        (dateChange)="
+          merit.date = $event.value ? $event.value.toISOString() : ''
+        "
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Type</mat-label>
+      <select matNativeControl required [(ngModel)]="merit.type" name="type">
+        <option value="" disabled>Select type</option>
+        <option *ngFor="let option of types" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="meritForm.invalid"
+      >
+        Save
+      </button>
+      <button mat-button color="warn" type="button" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</ng-template>

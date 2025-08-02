@@ -1,25 +1,26 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
-
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
 // Define the theme object.
-$pinpotha-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$blue-palette,
-  ),
-  density: (
-    scale: 0,
+$pinpotha-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -36,5 +37,11 @@ $pinpotha-theme: mat.define-theme((
 // @include mat.color-variants-backwards-compatibility($pinpotha-theme);
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

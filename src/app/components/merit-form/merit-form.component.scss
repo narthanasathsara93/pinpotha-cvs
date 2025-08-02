@@ -1,0 +1,25 @@
+.form-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 2rem;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+button {
+  min-width: 100px;
+}

@@ -20,7 +20,7 @@
     </mat-form-field>
   </div>
 
-  <div class="merit-item" *ngFor="let merit of pagedMerits; let i = index">
+  <div class="merit-item" *ngFor="let merit of pagedMerits; let i = index" (click)="viewDetail(merit.id)" >
     <div class="merit-number">{{ pageIndex * pageSize + i + 1 }}</div>
     <img
       class="merit-image"

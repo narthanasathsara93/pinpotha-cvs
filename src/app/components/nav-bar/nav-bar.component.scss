@@ -1,0 +1,38 @@
+mat-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+   background-color:#eb784a;
+  color: rgb(0, 0, 0);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+//   color: white;
+  text-decoration: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.menu {
+  display: flex;
+
+//   button {
+//     color: white;
+//   }
+}
+
+/* Make toolbar and buttons responsive */
+@media (max-width: 600px) {
+  mat-toolbar {
+    padding: 0 0.5rem;
+  }
+
+  .menu button {
+    font-size: 0.875rem; /* smaller font */
+    padding: 0 8px;
+  }
+}

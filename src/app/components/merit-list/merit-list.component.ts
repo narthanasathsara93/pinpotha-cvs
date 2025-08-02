@@ -1,30 +1,52 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SupabaseService } from '../../services/supabase.service';
 import { Merit } from '../../models/merits.model';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-merit-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    DatePipe,
+  ],
   templateUrl: './merit-list.component.html',
   styleUrl: './merit-list.component.scss',
 })
 export class MeritListComponent {
-  tasks: Merit[] = [];
+  merits: Merit[] = [];
+  loading = false;
   error = '';
 
-  constructor(private supabaseService: SupabaseService) {}
+  types = ['abc', 'pqr', 'xyz', 'lmn'];
+  selectedType = '';
 
-  ngOnInit(): void {
-    this.loadTasks();
+  constructor(private supabase: SupabaseService) {}
+
+  async ngOnInit() {
+    this.loading = true;
+    try {
+      this.merits = await this.supabase.getMerits();
+    } catch (e: any) {
+      this.error = e.message || 'Failed to load merits';
+    } finally {
+      this.loading = false;
+    }
   }
 
-  async loadTasks() {
-    try {
-      this.tasks = await this.supabaseService.getMerits();
-    } catch (error) {
-      console.error('Error loading tasks:', error);
-    }
+  get filteredMerits() {
+    if (!this.selectedType) return this.merits;
+    return this.merits.filter((m) => m.type === this.selectedType);
   }
 }

@@ -1,5 +1,35 @@
-<p>task-list works!</p>
-<div *ngFor="let task of tasks">
-  <h3>{{ task.title }}</h3>
-  <p>{{ task.description }}</p>
+<div *ngIf="loading" class="loading-spinner">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<div *ngIf="error" class="error-message">{{ error }}</div>
+
+<div class="merit-list-container" *ngIf="!loading && !error">
+  <div class="filter-row">
+    <div class="total-count">TOTAL: {{ filteredMerits.length }}</div>
+
+    <mat-form-field appearance="fill" class="filter-select">
+      <mat-select [(value)]="selectedType" placeholder="All Types">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="merit-item" *ngFor="let merit of filteredMerits">
+    <img
+      class="merit-image"
+      [src]="
+        merit.image_urls?.length
+          ? merit.image_urls[0]
+          : 'assets/placeholder.png'
+      "
+      alt="{{ merit.title }}"
+    />
+    <div class="merit-info">
+      <h3 class="merit-title">{{ merit.title }}</h3>
+      <p class="merit-description">{{ merit.description }}</p>
+      <p class="merit-date">{{ merit.date | date : "mediumDate" }}</p>
+    </div>
+  </div>
 </div>

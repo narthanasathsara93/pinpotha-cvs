@@ -1,0 +1,83 @@
+.merit-list-container {
+  max-width: 1000px;
+  margin: 2rem auto; /* center horizontally with margin top/bottom */
+  padding: 0 1rem;
+}
+
+.merit-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+
+.merit-image {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.merit-info {
+  flex: 1;
+}
+
+.merit-title {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.merit-description {
+  margin: 0 0 0.5rem 0;
+  color: #555;
+}
+
+.merit-date {
+  margin: 0;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.filter-row {
+  display: flex;
+  justify-content: space-between; /* spread left & right */
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-select {
+  width: 180px;
+}
+
+.total-count {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #444;
+}
+
+.filter-select {
+  height: 68px !important;
+  width: 180px;
+
+  /* Reduce height of mat-form-field */
+  .mat-form-field-wrapper {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+  }
+
+  /* Reduce height of the select trigger */
+  .mat-select-trigger {
+    height: 30px;
+    line-height: 30px;
+  }
+
+  /* Reduce padding inside the select */
+  .mat-select-value-text {
+    font-size: 0.875rem;
+    line-height: 30px;
+  }
+}

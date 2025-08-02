@@ -9,14 +9,19 @@
     <div class="total-count">TOTAL: {{ filteredMerits.length }}</div>
 
     <mat-form-field appearance="fill" class="filter-select">
-      <mat-select [(value)]="selectedType" placeholder="All Types">
+      <mat-select
+        [value]="selectedType"
+        (valueChange)="selectedType = $event"
+        placeholder="All Types"
+      >
         <mat-option value="">All</mat-option>
         <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <div class="merit-item" *ngFor="let merit of filteredMerits">
+  <div class="merit-item" *ngFor="let merit of pagedMerits; let i = index">
+    <div class="merit-number">{{ pageIndex * pageSize + i + 1 }}</div>
     <img
       class="merit-image"
       [src]="
@@ -27,9 +32,19 @@
       alt="{{ merit.title }}"
     />
     <div class="merit-info">
+      <h1></h1>
       <h3 class="merit-title">{{ merit.title }}</h3>
       <p class="merit-description">{{ merit.description }}</p>
       <p class="merit-date">{{ merit.date | date : "mediumDate" }}</p>
     </div>
   </div>
+
+  <mat-paginator
+    [length]="totalFilteredCount"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </div>

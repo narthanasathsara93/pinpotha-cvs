@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Angular Material imports
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,9 +24,10 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavbarComponent {
-  // menuOpen = false;
+  constructor(private router: Router) {}
 
-  // toggleMenu() {
-  //   this.menuOpen = !this.menuOpen;
-  // }
+  logout() {
+    localStorage.removeItem('auth');
+    this.router.navigate(['/login']);
+  }
 }

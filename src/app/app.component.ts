@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from './components/nav-bar/nav-bar.component';
 import { RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'pinpotha';
+   constructor(router: Router) {
+    router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        console.log('NavigationEnd:', event.urlAfterRedirects);
+      }
+    });
+  }
 }

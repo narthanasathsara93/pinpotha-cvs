@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-merit-list',
@@ -19,6 +20,7 @@ import { MatOptionModule } from '@angular/material/core';
     MatSelectModule,
     MatFormFieldModule,
     MatOptionModule,
+    MatPaginatorModule,
     DatePipe,
   ],
   templateUrl: './merit-list.component.html',
@@ -30,11 +32,16 @@ export class MeritListComponent {
   error = '';
 
   types = ['abc', 'pqr', 'xyz', 'lmn'];
-  selectedType = '';
+  private _selectedType = '';
+
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 20, 30, 40, 50, 100];
 
   constructor(private supabase: SupabaseService) {}
 
   async ngOnInit() {
+    console.log('MeritListComponent loaded');
     this.loading = true;
     try {
       this.merits = await this.supabase.getMerits();
@@ -45,8 +52,39 @@ export class MeritListComponent {
     }
   }
 
-  get filteredMerits() {
-    if (!this.selectedType) return this.merits;
-    return this.merits.filter((m) => m.type === this.selectedType);
+  get selectedType() {
+    return this._selectedType;
+  }
+  set selectedType(value: string) {
+    this._selectedType = value;
+    this.pageIndex = 0;
+  }
+
+  get filteredMerits(): Merit[] {
+    return this.selectedType
+      ? this.merits.filter((m) => m.type === this.selectedType)
+      : this.merits;
+  }
+
+  get pagedMerits(): Merit[] {
+    const start = this.pageIndex * this.pageSize;
+    return this.filteredMerits.slice(start, start + this.pageSize);
+  }
+
+  get totalFilteredCount(): number {
+    return this.filteredMerits.length;
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+  }
+
+  onTypeChange() {
+    this.pageIndex = 0;
+  }
+
+  applyFilters() {
+    this.pageIndex = 0;
   }
 }

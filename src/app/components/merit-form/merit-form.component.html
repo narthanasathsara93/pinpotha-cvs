@@ -41,6 +41,35 @@
       </select>
     </mat-form-field>
 
+    <div
+      *ngFor="let file of selectedFiles; let i = index"
+      class="image-upload-section"
+    >
+      <img
+        *ngIf="filePreviews[i]"
+        [src]="filePreviews[i]"
+        alt="Preview {{ i + 1 }}"
+        class="image-preview"
+      />
+      <button type="button" mat-button color="warn" (click)="removeImage(i)">
+        Remove
+      </button>
+    </div>
+
+    <div class="custom-upload-wrapper">
+      <input
+        id="imageUpload"
+        type="file"
+        (change)="onImageSelected($event)"
+        accept="image/*"
+        hidden
+      />
+      <label for="imageUpload" class="custom-upload-button">
+        <mat-icon>add_photo_alternate</mat-icon>
+        Add Image
+      </label>
+    </div>
+
     <div class="button-row">
       <button
         mat-raised-button

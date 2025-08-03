@@ -5,6 +5,10 @@
 }
 
 .merit-item {
+  :hover {
+    cursor: pointer;
+    background-color: #f5f5f5; /* subtle hover effect */
+  }
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;

@@ -108,7 +108,6 @@ export class MeritFormComponent {
         Boolean
       );
 
-      console.log('mertit', this.merit);
       if (this.merit.id) {
         await this.supabase.updateMerit(parseInt(this.merit.id), {
           id: this.merit.id,

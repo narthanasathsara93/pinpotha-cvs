@@ -5,7 +5,7 @@
 
   <nav class="menu">
     <button mat-button routerLink="/">මුල් පිටුව</button>
-    <button mat-button routerLink="/merits/add">නව</button>
+    <button *ngIf="isLoggedIn()" mat-button routerLink="/merits/add">නව</button>
     <button *ngIf="isLoggedIn()" mat-button (click)="logout()">පිටවීම</button>
     <button *ngIf="!isLoggedIn()" mat-button (click)="login()">ඇතුල්වීම</button>
   </nav>

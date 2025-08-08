@@ -35,7 +35,9 @@ export class SupabaseService {
     merit: Omit<Merit, 'id' | 'created_at' | 'updated_at'>
   ): Promise<{ error?: string }> {
     const { error } = await supabase.from(mertisTable).insert([merit]);
-    if (error) {console.log('my err : ', error); return { error: error.message };}
+    if (error) {
+      return { error: error.message };
+    }
     this.clearCache();
     return {};
   }

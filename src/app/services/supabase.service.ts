@@ -35,7 +35,7 @@ export class SupabaseService {
     merit: Omit<Merit, 'id' | 'created_at' | 'updated_at'>
   ): Promise<{ error?: string }> {
     const { error } = await supabase.from(mertisTable).insert([merit]);
-    if (error) return { error: error.message };
+    if (error) {console.log('my err : ', error); return { error: error.message };}
     this.clearCache();
     return {};
   }
@@ -45,7 +45,7 @@ export class SupabaseService {
     merit: Omit<Merit, 'created_at' | 'updated_at'>
   ): Promise<void> {
     try {
-      const { data: existing, error: fetchError } = await supabase
+      const { error: fetchError } = await supabase
         .from(mertisTable)
         .select('image_urls')
         .eq('id', id)

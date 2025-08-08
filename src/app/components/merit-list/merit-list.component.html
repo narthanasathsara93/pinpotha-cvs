@@ -6,16 +6,16 @@
 
 <div class="merit-list-container" *ngIf="!loading && !error">
   <div class="filter-row">
-    <div class="total-count">TOTAL: {{ filteredMerits.length }}</div>
+    <div class="total-count">එකතුව : {{ filteredMerits.length }}</div>
 
     <mat-form-field appearance="fill" class="filter-select">
       <mat-select
         [value]="selectedType"
         (valueChange)="selectedType = $event"
-        placeholder="All Types"
+        placeholder="සියලුම"
       >
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+        <mat-option value="">සියලුම</mat-option>
+        <mat-option *ngFor="let t of types" [value]="t.value">{{ t.label }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -27,7 +27,7 @@
       [src]="
         merit.image_urls?.length
           ? merit.image_urls[0]
-          : 'assets/placeholder.png'
+          : defaultImageUrl
       "
       alt="{{ merit.title }}"
     />

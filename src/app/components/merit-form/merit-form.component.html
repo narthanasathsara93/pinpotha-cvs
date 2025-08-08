@@ -46,6 +46,17 @@
       </select>
     </mat-form-field>
 
+    <!-- Video Urls -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Video Urls</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="merit.video_urls"
+        name="video_urls"
+      ></textarea>
+    </mat-form-field>
+
     <!-- Existing Images (from DB) -->
     <div *ngIf="existingImages.length > 0">
       <h4>Existing Images</h4>

@@ -1,43 +1,74 @@
 <div *ngIf="loading">Loading...</div>
 <div *ngIf="error">{{ error }}</div>
 
-<div *ngIf="merit">
-  <div class="detail-container">
-    <div class="header-row">
-      <h2>{{ merit?.title }}</h2>
-    </div>
-    <h3 class="merit-date">{{ merit.date | date : "mediumDate" }}</h3>
+<div *ngIf="merit" class="detail-container">
+  <!-- Title -->
+  <header class="header-row">
+    <h2>{{ merit?.title }}</h2>
+  </header>
+
+  <!-- Date -->
+  <section class="date-section">
+    <time class="merit-date">{{ merit.date | date : "mediumDate" }}</time>
+  </section>
+
+  <!-- Description -->
+  <section class="description-section">
+    <h3>විස්තරය</h3>
     <p class="description">{{ merit?.description }}</p>
+  </section>
 
+  <!-- Video URLs -->
+  <section
+    *ngIf="merit.video_urls && merit.video_urls.length > 0"
+    class="video-list"
+  >
+    <h3>වීඩියෝ</h3>
+    <ul>
+      <li *ngFor="let url of merit.video_urls; let i = index">
+        <a [href]="url" target="_blank" rel="noopener noreferrer">
+          Video {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Images -->
+  <section
+    class="images-section"
+    *ngIf="merit.image_urls && merit.image_urls.length > 0"
+  >
+    <h3>ඡායාරූප</h3>
     <app-image-gallery [images]="merit.image_urls"></app-image-gallery>
+  </section>
 
-    <div class="button-row">
+  <!-- Buttons -->
+  <div class="button-row">
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="onBack()"
+      aria-label="Back"
+    >
+      ආපසු
+    </button>
+    <ng-container *ngIf="isLoggedIn()">
       <button
-        mat-stroked-button
-        color="primary"
-        (click)="onBack()"
-        aria-label="Back"
+        mat-flat-button
+        color="accent"
+        (click)="onEdit()"
+        aria-label="Edit"
       >
-        Back
+        වෙනස් කිරීම
       </button>
-      <ng-container *ngIf="isLoggedIn()">
-        <button
-          mat-flat-button
-          color="accent"
-          (click)="onEdit()"
-          aria-label="Edit"
-        >
-          Edit
-        </button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="onDelete()"
-          aria-label="Delete"
-        >
-          Delete
-        </button>
-      </ng-container>
-    </div>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="onDelete()"
+        aria-label="Delete"
+      >
+        මකන්න
+      </button>
+    </ng-container>
   </div>
 </div>

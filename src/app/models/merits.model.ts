@@ -4,6 +4,7 @@ export interface Merit {
   description: string;
   type: string;
   image_urls: string[];
+  video_urls: string[];
   date: string;
   created_at: string;
   updated_at: string;

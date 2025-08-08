@@ -1,60 +1,107 @@
 .detail-container {
   max-width: 700px;
   margin: 80px auto;
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   background-color: #fdfdfd;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   font-family: Arial, sans-serif;
+  color: #333;
 }
 
+/* Header Title */
 .header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8rem;
 
   h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #222;
     margin: 0;
-    font-size: 1.8rem;
-    color: #333;
+    border-bottom: 1px solid #858484;
+    padding-bottom: 0.2rem;
   }
+}
 
-  .date {
-    margin: 0;
+/* Date */
+.date-section {
+  margin-bottom: 2rem;
+  .merit-date {
     font-size: 1rem;
     color: #666;
-    white-space: nowrap;
+    font-style: italic;
   }
 }
 
-.description {
-  font-size: 1.1rem;
-  color: #444;
-  line-height: 1.6;
-  text-align: justify;
+/* Description Section */
+.description-section {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c1602;
+    margin-bottom: 0.6rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.6;
+    text-align: justify;
+    background-color: #f9f9f9;
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.03);
+  }
 }
 
-.image-carousel-container {
-  max-width: 600px;
-  margin: 1rem auto;
-  text-align: center;
+/* Video List Section */
+.video-list {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c1602;
+    margin-bottom: 0.6rem;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      a {
+        text-decoration: none;
+        color: #1565c0;
+        font-weight: 500;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #0d47a1;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
 
-.carousel-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 4px;
+/* Images Section */
+.images-section {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c1602;
+    margin-bottom: 0.6rem;
+  }
 }
 
-.carousel-controls {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
+/* Buttons */
 .button-row {
   display: flex;
   justify-content: flex-end;

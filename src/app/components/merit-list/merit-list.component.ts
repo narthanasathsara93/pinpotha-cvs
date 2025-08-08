@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SupabaseService } from '../../services/supabase.service';
+import { ImageService } from './../../services/image.service';
 import { Merit } from '../../models/merits.model';
 import { Router } from '@angular/router';
 
@@ -10,7 +11,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { options } from '../../util/options';
 
+export interface Option {
+  label: string;
+  value: string;
+}
 @Component({
   selector: 'app-merit-list',
   standalone: true,
@@ -32,19 +38,26 @@ export class MeritListComponent {
   loading = false;
   error = '';
 
-  types = ['abc', 'pqr', 'xyz', 'lmn'];
+  types: Option[] = options;
   private _selectedType = '';
 
   pageSize = 5;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 20, 30, 40, 50, 100];
 
-  constructor(private supabase: SupabaseService, private router: Router) {}
+  defaultImageUrl = '';
+
+  constructor(
+    private supabase: SupabaseService,
+    private router: Router,
+    private imageSerice: ImageService
+  ) {}
 
   async ngOnInit() {
     this.loading = true;
     try {
       this.merits = await this.supabase.getMerits();
+      this.defaultImageUrl = this.imageSerice.getDefaultImageUrl();
     } catch (e: any) {
       this.error = e.message || 'Failed to load merits';
     } finally {

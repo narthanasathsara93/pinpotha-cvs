@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase.service';
-
+import { ImageService } from '../../services/image.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,8 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { Router } from '@angular/router';
 import { Merit } from '../../models/merits.model';
-import { types } from '../../util/options';
-
+import { options } from '../../util/options';
+export interface Option {
+  label: string;
+  value: string;
+}
 @Component({
   selector: 'app-merit-form',
   standalone: true,
@@ -42,7 +45,7 @@ export class MeritFormComponent {
     image_urls: [],
     date: '',
   };
-  types = types;
+  types: Option[] = options;
   previewUrl: string | null = null;
   filePreviews: string[] = [];
   imageUrl: string | null = null;
@@ -54,7 +57,8 @@ export class MeritFormComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private supabase: SupabaseService
+    private supabase: SupabaseService,
+    private imageService: ImageService
   ) {}
 
   async ngOnInit() {
@@ -79,6 +83,7 @@ export class MeritFormComponent {
       };
     }
   }
+
   async onSubmit() {
     if (
       !this.merit.title ||
@@ -103,8 +108,8 @@ export class MeritFormComponent {
         Boolean
       );
 
+      console.log('mertit', this.merit);
       if (this.merit.id) {
-        // UPDATE MODE
         await this.supabase.updateMerit(parseInt(this.merit.id), {
           id: this.merit.id,
           title: this.merit.title!,
@@ -112,6 +117,7 @@ export class MeritFormComponent {
           type: this.merit.type!,
           date: this.merit.date!,
           image_urls: finalImageUrls || [],
+          video_urls: this.getVideoUrl(this.merit.video_urls) || [],
         });
 
         for (const url of this.removedImages) {
@@ -125,9 +131,10 @@ export class MeritFormComponent {
           type: this.merit.type,
           date: this.merit.date,
           image_urls: finalImageUrls || [],
+          video_urls: this.getVideoUrl(this.merit.video_urls) || [],
         });
       }
-      this.router.navigate([`/merits/${this.merit.id ? this.merit.id : ''}`]);
+      this.goBackToDetailPage();
     } catch (err) {
       alert('An error occurred during submission.');
       console.error(err);
@@ -135,11 +142,17 @@ export class MeritFormComponent {
       this.loading = false;
     }
   }
+
   async uploadSelectedImages(): Promise<string[]> {
     const uploadedUrls: string[] = [];
 
+    if (this.selectedFiles.length === 0) {
+      return uploadedUrls;
+    }
+
     for (const file of this.selectedFiles) {
-      const url = await this.supabase.uploadImage(file);
+      const compressedFile = await this.imageService.compressImage(file, 300);
+      const url = await this.supabase.uploadImage(compressedFile);
       if (url) {
         uploadedUrls.push(url);
       }
@@ -148,7 +161,11 @@ export class MeritFormComponent {
   }
 
   onCancel() {
-    this.router.navigate(['/merits']);
+    this.goBackToDetailPage();
+  }
+
+  goBackToDetailPage() {
+    this.router.navigate([`/merits/${this.merit.id ? this.merit.id : ''}`]);
   }
 
   onImageSelected(event: Event): void {
@@ -189,5 +206,10 @@ export class MeritFormComponent {
   removeNewImageLocally(index: number) {
     this.selectedFiles.splice(index, 1);
     this.filePreviews.splice(index, 1);
+  }
+
+  getVideoUrl(vidUrls: any): string[] {
+    if (!vidUrls) return [];
+    return vidUrls.split(',').map((s: string) => s.trim());
   }
 }

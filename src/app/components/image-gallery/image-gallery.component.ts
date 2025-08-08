@@ -21,7 +21,7 @@ export class ImageGalleryComponent {
   openImageDialog(imageUrl: string) {
     this.dialog.open(ImageDialogComponent, {
       data: { imageUrl },
-      panelClass: 'custom-dialog-container', // optional for styling
+      panelClass: 'custom-dialog-container',
       maxWidth: '90vw',
       maxHeight: '90vh',
     });

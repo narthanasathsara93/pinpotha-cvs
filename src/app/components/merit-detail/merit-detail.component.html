@@ -15,10 +15,12 @@
       <button mat-stroked-button color="primary" (click)="onBack()">
         Back
       </button>
-      <button mat-flat-button color="accent" (click)="onEdit()">Edit</button>
-      <button mat-raised-button color="warn" (click)="onDelete()">
-        Delete
-      </button>
+      <template *ngIf="isLoggedIn()">
+        <button mat-flat-button color="accent" (click)="onEdit()">Edit</button>
+        <button mat-raised-button color="warn" (click)="onDelete()">
+          Delete
+        </button>
+      </template>
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
+import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ImageGalleryComponent } from '../image-gallery/image-gallery.component';
@@ -36,6 +37,7 @@ export class MeritDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
     private supabase: SupabaseService,
     private snackBar: MatSnackBar
   ) {}
@@ -52,7 +54,10 @@ export class MeritDetailComponent {
       this.loading = false;
     }
   }
-
+  isLoggedIn(): boolean {
+    const isLoggedIn = this.authService.isLoggedIn();
+    return isLoggedIn;
+  }
   prevImage() {
     if (this.selectedImageIndex > 0) {
       this.selectedImageIndex--;
@@ -70,23 +75,24 @@ export class MeritDetailComponent {
   }
 
   onEdit() {
-    // TODO: Implement edit navigation
+    this.router.navigate([`/merits/${this.getMeritId()}/edit`]);
   }
 
   async onDelete() {
     if (!confirm('Are you sure you want to delete this item?')) return;
     try {
-      await this.supabase.deleteMerit(this.merit.id);
-      this.openSnackBar('Merit deleted successfully', );
+      await this.supabase.deleteMerit(this.getMeritId());
+      this.openSnackBar('Merit deleted successfully');
       this.router.navigate(['/merits']);
     } catch (err: any) {
-      this.openSnackBar(
-        'Failed to delete merit: ' + err.message,
-      );
+      this.openSnackBar('Failed to delete merit: ' + err.message);
     }
   }
 
-  openSnackBar(message: string,) {
+  getMeritId() {
+    return this.merit.id ? this.merit.id : '';
+  }
+  openSnackBar(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 100000,
     });

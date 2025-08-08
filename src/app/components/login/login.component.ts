@@ -34,23 +34,24 @@ export class LoginComponent {
 
   async ngOnInit() {
     const auth = localStorage.getItem('auth');
-    console.log('Auth status:', auth);
     if (auth === 'true') {
       await this.router.navigate(['/merits']);
     }
   }
   async login() {
-    this.router.navigate(['/merits']);
     this.loading = true;
     this.error = '';
 
+    if (!this.userName || !this.password) {
+      this.error = 'Username and password are required';
+      this.loading = false;
+      return;
+    }
     try {
       const hash = await this.authService.getPasswordHash(this.userName);
-      console.log('Hash:', hash);
       const isMatch = await bcrypt.compare(this.password, hash);
 
       if (isMatch) {
-        console.log('Password match:', isMatch);
         localStorage.setItem('auth', 'true');
         this.router.navigate(['/merits']);
       } else {
@@ -75,6 +76,18 @@ export class LoginComponent {
     this.error = '';
     this.success = '';
 
+    if (!this.userName || !this.password) {
+      this.error = 'Username and password are required';
+      this.loading = false;
+      return;
+    }
+    const userExists = await this.authService.userNameExits(this.userName);
+    if (userExists) {
+      this.error = 'Username already exists';
+      this.loading = false;
+      return;
+    }
+
     const error = await this.authService.createUser(
       this.userName,
       this.password
@@ -85,9 +98,14 @@ export class LoginComponent {
       this.error = error;
     } else {
       this.success = 'User created successfully!';
+      this.router.navigate(['/merits']);
       setTimeout(() => {
         this.success = '';
       }, 1500);
     }
+  }
+
+  isUserExists(): boolean {
+    return !!localStorage.getItem('auth');
   }
 }

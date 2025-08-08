@@ -28,6 +28,24 @@ export class AuthService {
     }
   }
 
+  async userNameExits(userName: string): Promise<boolean> {
+    const { data, error } = await supabase
+      .from('auth_settings')
+      .select('*')
+      .eq('user_name', userName)
+      .single();
+
+    if (error || !data) {
+      console.error('Error fetching user name:', error?.message);
+      return false;
+    }
+
+    if (data.user_name) {
+      return true;
+    }
+    return false;
+  }
+
   async getPasswordHash(userName: string): Promise<string> {
     const { data, error } = await supabase
       .from('auth_settings')
@@ -35,11 +53,14 @@ export class AuthService {
       .eq('user_name', userName)
       .single();
 
-    console.log('Password hash fetched:', data, error);
     if (error || !data) {
       throw new Error('Failed to fetch password hash');
     }
 
     return data.password_hash;
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('auth') === 'true';
   }
 }

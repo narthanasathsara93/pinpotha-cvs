@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Merit } from '../models/merits.model';
-import { supabase, bucketName } from '../util/supabase-client';
+import { supabase, bucketName, mertisTable } from '../util/supabase-client';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
   async getMerits(): Promise<Merit[]> {
     const cached = localStorage.getItem('meritsCache');
     if (cached) {
-      console.log('Using cached merits data');
       return JSON.parse(cached) as Merit[];
     }
     const { data, error } = await supabase
-      .from('merits')
+      .from(mertisTable)
       .select('*')
       .order('date', { ascending: false });
     if (error || !data) throw new Error('Failed to fetch merits');
@@ -21,7 +20,7 @@ export class SupabaseService {
 
   async getMeritById(id: number): Promise<Merit> {
     const { data, error } = await supabase
-      .from('merits')
+      .from(mertisTable)
       .select('*')
       .eq('id', id)
       .single();
@@ -35,7 +34,7 @@ export class SupabaseService {
   async insertMerit(
     merit: Omit<Merit, 'id' | 'created_at' | 'updated_at'>
   ): Promise<{ error?: string }> {
-    const { error } = await supabase.from('merits').insert([merit]);
+    const { error } = await supabase.from(mertisTable).insert([merit]);
     if (error) return { error: error.message };
     this.clearCache();
     return {};
@@ -45,12 +44,52 @@ export class SupabaseService {
     id: number,
     merit: Omit<Merit, 'created_at' | 'updated_at'>
   ): Promise<void> {
-    //not done yet
-    this.clearCache();
+    try {
+      const { data: existing, error: fetchError } = await supabase
+        .from(mertisTable)
+        .select('image_urls')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+      const oldUrls: string[] = existing?.image_urls || [];
+
+      const newUrls: string[] = [];
+      for (const img of merit.image_urls || []) {
+        if (
+          typeof img === 'object' &&
+          img !== null &&
+          'name' in img &&
+          'size' in img &&
+          'type' in img
+        ) {
+          const uploadedUrl = await this.uploadImage(img as File);
+          if (uploadedUrl) newUrls.push(uploadedUrl);
+        } else {
+          newUrls.push(img);
+        }
+      }
+
+      const { error: updateError } = await supabase
+        .from(mertisTable)
+        .update({
+          ...merit,
+          image_urls: newUrls,
+        })
+        .eq('id', id);
+
+      if (updateError) throw updateError;
+
+      // 5️⃣ Clear cache
+      this.clearCache();
+    } catch (err) {
+      console.error('Error updating merit:', err);
+      throw err;
+    }
   }
 
   async deleteMerit(id: number): Promise<any> {
-    const { error } = await supabase.from('merits').delete().eq('id', id);
+    const { error } = await supabase.from(mertisTable).delete().eq('id', id);
     if (error) throw new Error('Failed to delete merit: ' + error.message);
     this.clearCache();
   }
@@ -59,7 +98,7 @@ export class SupabaseService {
     const filePath = `${Date.now()}_${file.name}`;
 
     const { data, error } = await supabase.storage
-      .from('merit-images') // replace with your bucket name
+      .from(bucketName) // replace with your bucket name
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -70,18 +109,22 @@ export class SupabaseService {
       return null;
     }
 
-    // Get the public URL
     const { data: publicUrlData } = supabase.storage
-      .from('merit-images') // same bucket
+      .from(bucketName)
       .getPublicUrl(filePath);
-
-    // if (publicUrlError || !publicUrlData?.publicUrl) {
-    //   console.error('Failed to get public URL:', publicUrlError?.message);
-    //   return null;
-    // }
 
     return publicUrlData.publicUrl;
   }
+
+  async deleteImageFromStorage(path: string): Promise<any> {
+    const { error } = await supabase.storage.from(bucketName).remove([path]);
+
+    if (error) {
+      console.error('Delete failed:', error.message);
+      throw error;
+    }
+  }
+
   clearCache() {
     localStorage.removeItem('meritsCache');
   }

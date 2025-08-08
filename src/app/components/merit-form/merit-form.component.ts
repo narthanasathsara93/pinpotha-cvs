@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,7 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { Router } from '@angular/router';
 import { Merit } from '../../models/merits.model';
-import { types } from '../../util/options'; // Assuming you have a types array defined in options.ts
+import { types } from '../../util/options';
+
 @Component({
   selector: 'app-merit-form',
   standalone: true,
@@ -26,7 +28,7 @@ import { types } from '../../util/options'; // Assuming you have a types array d
     MatNativeDateModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './merit-form.component.html',
   styleUrl: './merit-form.component.scss',
@@ -38,14 +40,16 @@ export class MeritFormComponent {
     description: '',
     type: '',
     image_urls: [],
-    date: '', // keep as string for binding
+    date: '',
   };
-  types = types; // Assuming you have a types array defined in options.ts
+  types = types;
   previewUrl: string | null = null;
   filePreviews: string[] = [];
   imageUrl: string | null = null;
   imageUrls: string[] = [];
   selectedFiles: File[] = [];
+  existingImages: string[] = [];
+  removedImages: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,17 +60,16 @@ export class MeritFormComponent {
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      // edit mode
       this.loading = true;
       try {
         this.merit = await this.supabase.getMeritById(+id);
+        this.existingImages = [...(this.merit.image_urls || [])];
       } catch (e) {
-        // handle error
+        console.error(e);
       } finally {
         this.loading = false;
       }
     } else {
-      // new mode, initialize empty merit
       this.merit = {
         title: '',
         description: '',
@@ -95,31 +98,36 @@ export class MeritFormComponent {
         : (this.merit.date as Date).toISOString();
 
     try {
-      // 🔹 Upload images first
-      const imageUrls = await this.uploadSelectedImages();
-
-      // 🔹 Set the image_urls array in the merit object
-      this.merit.image_urls = imageUrls;
+      const uploadedUrls = await this.uploadSelectedImages();
+      const finalImageUrls = [...this.existingImages, ...uploadedUrls].filter(
+        Boolean
+      );
 
       if (this.merit.id) {
-        return; // handle update logic here if needed
+        // UPDATE MODE
+        await this.supabase.updateMerit(parseInt(this.merit.id), {
+          id: this.merit.id,
+          title: this.merit.title!,
+          description: this.merit.description!,
+          type: this.merit.type!,
+          date: this.merit.date!,
+          image_urls: finalImageUrls || [],
+        });
+
+        for (const url of this.removedImages) {
+          await this.deleteImageFromStorage(url);
+        }
+        this.removedImages = [];
       } else {
-        // 🔹 Insert new merit
-        const { error } = await this.supabase.insertMerit({
+        await this.supabase.insertMerit({
           title: this.merit.title,
           description: this.merit.description,
           type: this.merit.type,
           date: this.merit.date,
-          image_urls: imageUrls,
+          image_urls: finalImageUrls || [],
         });
-
-        if (error) {
-          alert('Insert failed: ' + error);
-          return;
-        }
       }
-
-      this.router.navigate(['/merits']);
+      this.router.navigate([`/merits/${this.merit.id ? this.merit.id : ''}`]);
     } catch (err) {
       alert('An error occurred during submission.');
       console.error(err);
@@ -127,7 +135,6 @@ export class MeritFormComponent {
       this.loading = false;
     }
   }
-
   async uploadSelectedImages(): Promise<string[]> {
     const uploadedUrls: string[] = [];
 
@@ -137,7 +144,6 @@ export class MeritFormComponent {
         uploadedUrls.push(url);
       }
     }
-
     return uploadedUrls;
   }
 
@@ -161,7 +167,26 @@ export class MeritFormComponent {
     input.value = '';
   }
 
-  removeImage(index: number): void {
+  async deleteImageFromStorage(fullUrl: string): Promise<void> {
+    try {
+      const { error } = await this.supabase.deleteImageFromStorage(fullUrl);
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error deleting image from storage:', err);
+    }
+  }
+
+  removeExistingImageLocally(index: number) {
+    const confirmDelete = confirm(
+      'Remove this image? It will be deleted from storage after saving.'
+    );
+    if (!confirmDelete) return;
+
+    const removed = this.existingImages.splice(index, 1)[0];
+    this.removedImages.push(removed);
+  }
+
+  removeNewImageLocally(index: number) {
     this.selectedFiles.splice(index, 1);
     this.filePreviews.splice(index, 1);
   }

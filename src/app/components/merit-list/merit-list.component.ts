@@ -42,7 +42,6 @@ export class MeritListComponent {
   constructor(private supabase: SupabaseService, private router: Router) {}
 
   async ngOnInit() {
-    console.log('MeritListComponent loaded');
     this.loading = true;
     try {
       this.merits = await this.supabase.getMerits();

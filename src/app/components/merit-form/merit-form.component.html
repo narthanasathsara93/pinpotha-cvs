@@ -1,10 +1,12 @@
 <div class="form-container" *ngIf="!loading; else loadingTemplate">
   <form (ngSubmit)="onSubmit()" #meritForm="ngForm">
+    <!-- Title -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Title</mat-label>
       <input matInput required [(ngModel)]="merit.title" name="title" />
     </mat-form-field>
 
+    <!-- Description -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Description</mat-label>
       <textarea
@@ -15,6 +17,7 @@
       ></textarea>
     </mat-form-field>
 
+    <!-- Date -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Date</mat-label>
       <input
@@ -31,6 +34,8 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
+    <!-- Type -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Type</mat-label>
       <select matNativeControl required [(ngModel)]="merit.type" name="type">
@@ -41,21 +46,54 @@
       </select>
     </mat-form-field>
 
-    <div
-      *ngFor="let file of selectedFiles; let i = index"
-      class="image-upload-section"
-    >
-      <img
-        *ngIf="filePreviews[i]"
-        [src]="filePreviews[i]"
-        alt="Preview {{ i + 1 }}"
-        class="image-preview"
-      />
-      <button type="button" mat-button color="warn" (click)="removeImage(i)">
-        Remove
-      </button>
+    <!-- Existing Images (from DB) -->
+    <div *ngIf="existingImages.length > 0">
+      <h4>Existing Images</h4>
+      <div
+        *ngFor="let img of existingImages; let i = index"
+        class="image-upload-section"
+      >
+        <img
+          [src]="img"
+          alt="Existing Image {{ i + 1 }}"
+          class="image-preview"
+        />
+        <button
+          type="button"
+          mat-button
+          color="warn"
+          (click)="removeExistingImageLocally(i)"
+        >
+          Remove
+        </button>
+      </div>
     </div>
 
+    <!-- New Images (not yet uploaded) -->
+    <div *ngIf="selectedFiles.length > 0">
+      <h4>New Images</h4>
+      <div
+        *ngFor="let file of selectedFiles; let i = index"
+        class="image-upload-section"
+      >
+        <img
+          *ngIf="filePreviews[i]"
+          [src]="filePreviews[i]"
+          alt="Preview {{ i + 1 }}"
+          class="image-preview"
+        />
+        <button
+          type="button"
+          mat-button
+          color="warn"
+          (click)="removeNewImageLocally(i)"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <!-- Image Upload Button -->
     <div class="custom-upload-wrapper">
       <input
         id="imageUpload"
@@ -70,6 +108,7 @@
       </label>
     </div>
 
+    <!-- Buttons -->
     <div class="button-row">
       <button
         mat-raised-button

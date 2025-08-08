@@ -67,6 +67,6 @@ export class ImageService {
   }
 
   getDefaultImageUrl(): string {
-    return 'https://exhpdkktrnbduubqjyso.supabase.co/storage/v1/object/public/merit-images/1754665500142_default_icon.jpg';
+    return 'https://exhpdkktrnbduubqjyso.supabase.co/storage/v1/object/public/merit-images/lotus_icon.jpg';
   }
 }

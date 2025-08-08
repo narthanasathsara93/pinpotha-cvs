@@ -30,4 +30,12 @@ export class NavbarComponent {
     localStorage.removeItem('auth');
     this.router.navigate(['/login']);
   }
+
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('auth') === 'true';
+  }
 }

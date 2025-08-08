@@ -64,10 +64,15 @@
 }
 
 .total-count {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #444;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #2c1602;
+  max-width: 700px;
+  padding: 0.7rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(14, 14, 14, 0.08);
 }
+
 
 .filter-select {
   height: 68px !important;

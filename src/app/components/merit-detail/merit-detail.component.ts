@@ -86,11 +86,13 @@ export class MeritDetailComponent {
   getMeritId() {
     return this.merit.id ? this.merit.id : '';
   }
+  
   openSnackBar(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 100000,
+      duration: 4000,
     });
   }
+
   isLoggedIn(): boolean {
     return localStorage.getItem('auth') === 'true';
   }

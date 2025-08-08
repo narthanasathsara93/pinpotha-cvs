@@ -1,7 +1,7 @@
 <div class="login-container">
   <h2>Login / Create User</h2>
 
-  <form (ngSubmit)="login()" #loginForm="ngForm">
+  <form (ngSubmit)="login()" #loginForm="ngForm" (keydown.enter)="login()">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Username</mat-label>
       <input

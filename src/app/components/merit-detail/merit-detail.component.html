@@ -12,15 +12,32 @@
     <app-image-gallery [images]="merit.image_urls"></app-image-gallery>
 
     <div class="button-row">
-      <button mat-stroked-button color="primary" (click)="onBack()">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="onBack()"
+        aria-label="Back"
+      >
         Back
       </button>
-      <template *ngIf="isLoggedIn()">
-        <button mat-flat-button color="accent" (click)="onEdit()">Edit</button>
-        <button mat-raised-button color="warn" (click)="onDelete()">
+      <ng-container *ngIf="isLoggedIn()">
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="onEdit()"
+          aria-label="Edit"
+        >
+          Edit
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="onDelete()"
+          aria-label="Delete"
+        >
           Delete
         </button>
-      </template>
+      </ng-container>
     </div>
   </div>
 </div>

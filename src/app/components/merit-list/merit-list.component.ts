@@ -37,7 +37,7 @@ export class MeritListComponent {
 
   pageSize = 5;
   pageIndex = 0;
-  pageSizeOptions = [5, 20, 30, 40, 50, 100];
+  pageSizeOptions = [5, 10, 20, 30, 40, 50, 100];
 
   constructor(private supabase: SupabaseService, private router: Router) {}
 

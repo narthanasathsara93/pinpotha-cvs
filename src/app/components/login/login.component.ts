@@ -34,6 +34,7 @@ export class LoginComponent {
 
   async ngOnInit() {
     const auth = localStorage.getItem('auth');
+
     if (auth === 'true') {
       await this.router.navigate(['/merits']);
     }
@@ -63,7 +64,6 @@ export class LoginComponent {
       this.redirectToLogin();
     } finally {
       this.loading = false;
-      this.redirectToLogin();
     }
   }
 
@@ -98,6 +98,7 @@ export class LoginComponent {
       this.error = error;
     } else {
       this.success = 'User created successfully!';
+      localStorage.setItem('auth', 'true');
       this.router.navigate(['/merits']);
       setTimeout(() => {
         this.success = '';

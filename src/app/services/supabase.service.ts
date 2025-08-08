@@ -52,7 +52,6 @@ export class SupabaseService {
         .single();
 
       if (fetchError) throw fetchError;
-      const oldUrls: string[] = existing?.image_urls || [];
 
       const newUrls: string[] = [];
       for (const img of merit.image_urls || []) {
@@ -80,7 +79,6 @@ export class SupabaseService {
 
       if (updateError) throw updateError;
 
-      // 5️⃣ Clear cache
       this.clearCache();
     } catch (err) {
       console.error('Error updating merit:', err);
@@ -98,7 +96,7 @@ export class SupabaseService {
     const filePath = `${Date.now()}_${file.name}`;
 
     const { data, error } = await supabase.storage
-      .from(bucketName) // replace with your bucket name
+      .from(bucketName)
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,

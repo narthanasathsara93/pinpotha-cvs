@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
-import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ImageGalleryComponent } from '../image-gallery/image-gallery.component';
@@ -37,7 +36,6 @@ export class MeritDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
     private supabase: SupabaseService,
     private snackBar: MatSnackBar
   ) {}
@@ -53,10 +51,6 @@ export class MeritDetailComponent {
       }
       this.loading = false;
     }
-  }
-  isLoggedIn(): boolean {
-    const isLoggedIn = this.authService.isLoggedIn();
-    return isLoggedIn;
   }
   prevImage() {
     if (this.selectedImageIndex > 0) {
@@ -97,4 +91,8 @@ export class MeritDetailComponent {
       duration: 100000,
     });
   }
+  isLoggedIn(): boolean {
+    return localStorage.getItem('auth') === 'true';
+  }
+
 }

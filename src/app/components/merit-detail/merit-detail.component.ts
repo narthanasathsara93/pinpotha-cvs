@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-merit-detail',
   standalone: true,
@@ -26,6 +27,7 @@ import { Router } from '@angular/router';
   styleUrl: './merit-detail.component.scss',
 })
 export class MeritDetailComponent {
+  videoUrl: SafeResourceUrl;
   merit: any = {
     image_urls: [],
   };
@@ -37,8 +39,13 @@ export class MeritDetailComponent {
     private route: ActivatedRoute,
     private router: Router,
     private supabase: SupabaseService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private sanitizer: DomSanitizer
+  ) {
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://drive.google.com/file/d/1l8dd7JkA8apmpLqUuQfQ4B4TZ53TioXL/preview`
+    );
+  }
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -47,9 +54,11 @@ export class MeritDetailComponent {
       if (result) {
         this.merit = result;
       } else {
-        this.error = 'Failed to load merit';
+        this.router.navigate(['/merits']);
       }
       this.loading = false;
+    } else {
+      this.router.navigate(['/merits']);
     }
   }
   prevImage() {
@@ -76,6 +85,9 @@ export class MeritDetailComponent {
     if (!confirm('Are you sure you want to delete this item?')) return;
     try {
       await this.supabase.deleteMerit(this.getMeritId());
+      for (const url of this.merit.image_urls) {
+        await this.deleteImageFromStorage(url);
+      }
       this.openSnackBar('Merit deleted successfully');
       this.router.navigate(['/merits']);
     } catch (err: any) {
@@ -83,10 +95,18 @@ export class MeritDetailComponent {
     }
   }
 
+  async deleteImageFromStorage(fullUrl: string): Promise<void> {
+    try {
+      await this.supabase.deleteImageFromStorage(fullUrl);
+    } catch (err) {
+      console.error('Error deleting image from storage:', err);
+    }
+  }
+
   getMeritId() {
     return this.merit.id ? this.merit.id : '';
   }
-  
+
   openSnackBar(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 4000,
@@ -96,5 +116,4 @@ export class MeritDetailComponent {
   isLoggedIn(): boolean {
     return localStorage.getItem('auth') === 'true';
   }
-
 }

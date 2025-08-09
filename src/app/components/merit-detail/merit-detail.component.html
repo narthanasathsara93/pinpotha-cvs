@@ -17,13 +17,15 @@
     <h3>විස්තරය</h3>
     <p class="description">{{ merit?.description }}</p>
   </section>
-
+    <!-- <iframe [src]="videoUrl" width="640" height="480" allow="autoplay">
+    </iframe> -->
   <!-- Video URLs -->
   <section
     *ngIf="merit.video_urls && merit.video_urls.length > 0"
     class="video-list"
   >
     <h3>වීඩියෝ</h3>
+
     <ul>
       <li *ngFor="let url of merit.video_urls; let i = index">
         <a [href]="url" target="_blank" rel="noopener noreferrer">

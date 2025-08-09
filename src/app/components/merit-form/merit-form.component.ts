@@ -185,8 +185,7 @@ export class MeritFormComponent {
 
   async deleteImageFromStorage(fullUrl: string): Promise<void> {
     try {
-      const { error } = await this.supabase.deleteImageFromStorage(fullUrl);
-      if (error) throw error;
+      await this.supabase.deleteImageFromStorage(fullUrl);
     } catch (err) {
       console.error('Error deleting image from storage:', err);
     }
@@ -208,7 +207,7 @@ export class MeritFormComponent {
   }
 
   getVideoUrl(vidUrls: any): string[] {
-    if (!vidUrls) return [];
+    if (!vidUrls || vidUrls.length === 0) return [];
     return vidUrls.split(',').map((s: string) => s.trim());
   }
 }

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Merit } from '../models/merits.model';
-import { supabase, bucketName, mertisTable } from '../util/supabase-client';
+import {
+  supabase,
+  bucketName,
+  mertisTable,
+  supabaseUrl,
+} from '../util/supabase-client';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
@@ -18,15 +23,14 @@ export class SupabaseService {
     return data;
   }
 
-  async getMeritById(id: number): Promise<Merit> {
+  async getMeritById(id: number): Promise<any> {
     const { data, error } = await supabase
       .from(mertisTable)
       .select('*')
       .eq('id', id)
       .single();
-
-    if (error || !data) {
-      throw new Error('Failed to fetch merit data.');
+    if (error) {
+      return null;
     }
     return data;
   }
@@ -112,16 +116,29 @@ export class SupabaseService {
     const { data: publicUrlData } = supabase.storage
       .from(bucketName)
       .getPublicUrl(filePath);
-
+    this.clearCache();
     return publicUrlData.publicUrl;
   }
 
-  async deleteImageFromStorage(path: string): Promise<any> {
-    const { error } = await supabase.storage.from(bucketName).remove([path]);
+  async deleteImageFromStorage(publicUrl: string): Promise<void> {
+    try {
+      const fileName = publicUrl.split(`${bucketName}/`)[1];
 
-    if (error) {
-      console.error('Delete failed:', error.message);
-      throw error;
+      if (!fileName) {
+        console.error('Invalid file path extracted from URL:', publicUrl);
+        return;
+      }
+
+      const { error, data } = await supabase.storage
+        .from(`${bucketName}`)
+        .remove([`${fileName}`]);
+      this.clearCache();
+
+      if (error) {
+        console.error('Error deleting image from storage:', error);
+      }
+    } catch (err) {
+      console.error('Unexpected error deleting image from storage:', err);
     }
   }
 

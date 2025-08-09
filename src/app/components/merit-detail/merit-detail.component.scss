@@ -16,8 +16,6 @@
   margin: 80px auto;
   padding: 2rem 2.5rem;
   background-color: #fdfdfd;
-  // border-radius: 12px;
-  // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   color: #731717;
 }
 /* Header Title */
@@ -60,7 +58,7 @@
     font-size: 1.1rem;
     color: #444;
     line-height: 1.6;
-    text-align: justify;
+    text-align: left;
     background-color: #f9f9f9;
     padding: 1rem 1.2rem;
     border-radius: 6px;
@@ -152,5 +150,14 @@
     height: 26px;
     width: 26px;
     line-height: 26px;
+  }
+  .btn-icon {
+    visibility: hidden;
+  }
+
+  .header-row {
+    h2 {
+      font-size: 1.9rem;
+    }
   }
 }

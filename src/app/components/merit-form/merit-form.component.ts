@@ -116,7 +116,7 @@ export class MeritFormComponent {
           type: this.merit.type!,
           date: this.merit.date!,
           image_urls: finalImageUrls || [],
-          video_urls: this.getVideoUrl(this.merit.video_urls) || [],
+          video_urls: this.getVideoUrls(this.merit.video_urls) || [],
         });
 
         for (const url of this.removedImages) {
@@ -130,7 +130,7 @@ export class MeritFormComponent {
           type: this.merit.type,
           date: this.merit.date,
           image_urls: finalImageUrls || [],
-          video_urls: this.getVideoUrl(this.merit.video_urls) || [],
+          video_urls: this.getVideoUrls(this.merit.video_urls) || [],
         });
       }
       this.goBackToDetailPage();
@@ -206,8 +206,26 @@ export class MeritFormComponent {
     this.filePreviews.splice(index, 1);
   }
 
-  getVideoUrl(vidUrls: any): string[] {
-    if (!vidUrls || vidUrls.length === 0) return [];
-    return vidUrls.split(',').map((s: string) => s.trim());
+  getVideoUrls(input: any) {
+    if (Array.isArray(input)) {
+      return input;
+    }
+    if (typeof input === 'string') {
+      const trimmed = input.trim();
+      if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+        try {
+          const jsonCompatible = trimmed.replace(/'/g, '"');
+          const parsed = JSON.parse(jsonCompatible);
+          if (Array.isArray(parsed)) {
+            return parsed.map(String);
+          }
+        } catch {}
+      }
+      return trimmed
+        .split(',')
+        .map((s) => s.trim().replace(/^['"]+|['"]+$/g, ''))
+        .filter((s) => s.length > 0);
+    }
+    return [];
   }
 }

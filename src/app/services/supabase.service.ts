@@ -10,10 +10,10 @@ import {
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
   async getMerits(): Promise<Merit[]> {
-    const cached = localStorage.getItem('meritsCache');
-    if (cached) {
-      return JSON.parse(cached) as Merit[];
-    }
+    // const cached = localStorage.getItem('meritsCache');
+    // if (cached) {
+    //   return JSON.parse(cached) as Merit[];
+    // }
     const { data, error } = await supabase
       .from(mertisTable)
       .select('*')

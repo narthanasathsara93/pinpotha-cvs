@@ -84,6 +84,14 @@ export class MeritFormComponent {
     }
   }
 
+  formatDateWithoutTimezone(date: string | Date): string {
+    const d = date instanceof Date ? date : new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   async onSubmit() {
     if (
       !this.merit.title ||
@@ -97,10 +105,7 @@ export class MeritFormComponent {
 
     this.loading = true;
 
-    this.merit.date =
-      typeof this.merit.date === 'string'
-        ? this.merit.date
-        : (this.merit.date as Date).toISOString();
+    this.merit.date = this.formatDateWithoutTimezone(this.merit.date);
 
     try {
       const uploadedUrls = await this.uploadSelectedImages();

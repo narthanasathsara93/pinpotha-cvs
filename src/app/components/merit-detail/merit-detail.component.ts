@@ -27,10 +27,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './merit-detail.component.scss',
 })
 export class MeritDetailComponent {
-  videoUrl: SafeResourceUrl;
   merit: any = {
     image_urls: [],
   };
+  videoUrls: SafeResourceUrl[] = [];
   loading = true;
   error = '';
   selectedImageIndex = 0;
@@ -41,18 +41,19 @@ export class MeritDetailComponent {
     private supabase: SupabaseService,
     private snackBar: MatSnackBar,
     private sanitizer: DomSanitizer
-  ) {
-    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://drive.google.com/file/d/1l8dd7JkA8apmpLqUuQfQ4B4TZ53TioXL/preview`
-    );
-  }
+  ) {}
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      
       const result = await this.supabase.getMeritById(Number(id));
-      if (result) {
+      
+      console.log('result : ', this.videoUrls);
+      if (result) {        
         this.merit = result;
+        this.getSanitizedPreviewUrls();
+        console.log('merit', this.merit);
       } else {
         this.router.navigate(['/merits']);
       }
@@ -61,6 +62,7 @@ export class MeritDetailComponent {
       this.router.navigate(['/merits']);
     }
   }
+
   prevImage() {
     if (this.selectedImageIndex > 0) {
       this.selectedImageIndex--;
@@ -115,5 +117,23 @@ export class MeritDetailComponent {
 
   isLoggedIn(): boolean {
     return localStorage.getItem('auth') === 'true';
+  }
+
+  private extractFileId(url: string): string | null {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+    return match ? match[1] : null;
+  }
+
+  getSanitizedPreviewUrls(): any {
+    const urls: [] = this.merit.video_urls || [];
+    if (!urls.length) return [];
+    this.videoUrls = urls
+      .map((url) => {
+        const fileId = this.extractFileId(url);
+        if (!fileId) return null;
+        const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        return this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl);
+      })
+      .filter((url): url is SafeResourceUrl => url !== null);
   }
 }

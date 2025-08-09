@@ -23,6 +23,36 @@ button-row {
 button {
   min-width: 100px;
 }
+.image-section {
+  background-color: #efefef;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+.video-url-section {
+  background-color: #efefef;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.url-list {
+  margin-top: 1rem;
+}
+
+.vid-url {
+  font-size: 10px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  flex: 1;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .image-upload-section {
   margin-top: 1rem;
@@ -85,7 +115,7 @@ button {
 }
 
 .custom-upload-button:hover {
-  background-color:#6363ec;
+  background-color: #6363ec;
 }
 
 .custom-upload-button mat-icon {

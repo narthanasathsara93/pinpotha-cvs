@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 import { Router } from '@angular/router';
 import { Merit } from '../../models/merits.model';
@@ -32,6 +33,7 @@ export interface Option {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    MatListModule,
   ],
   templateUrl: './merit-form.component.html',
   styleUrl: './merit-form.component.scss',
@@ -53,7 +55,8 @@ export class MeritFormComponent {
   selectedFiles: File[] = [];
   existingImages: string[] = [];
   removedImages: string[] = [];
-
+  newVideoUrl: string = '';
+  videoUrlsArray: string[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,6 +70,13 @@ export class MeritFormComponent {
       this.loading = true;
       try {
         this.merit = await this.supabase.getMeritById(+id);
+        if (Array.isArray(this.merit.video_urls)) {
+          this.videoUrlsArray = this.merit.video_urls;
+        } else if (typeof this.merit.video_urls === 'string') {
+          this.videoUrlsArray = this.getVideoUrls(this.merit.video_urls);
+        } else {
+          this.videoUrlsArray = [];
+        }
         this.existingImages = [...(this.merit.image_urls || [])];
       } catch (e) {
         console.error(e);
@@ -232,5 +242,19 @@ export class MeritFormComponent {
         .filter((s) => s.length > 0);
     }
     return [];
+  }
+
+  addVideoUrl() {
+    const url = this.newVideoUrl.trim();
+      if (url && !this.videoUrlsArray.includes(url)) {
+      this.videoUrlsArray.push(url);
+      this.newVideoUrl = '';
+    }
+  }
+
+  removeVideoUrl(index: number, event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.videoUrlsArray.splice(index, 1);
   }
 }

@@ -1,4 +1,5 @@
 <div class="form-container" *ngIf="!loading; else loadingTemplate">
+  <div><h2>අංක {{merit.id}}</h2> </div>
   <form (ngSubmit)="onSubmit()" #meritForm="ngForm">
     <!-- Title -->
     <mat-form-field appearance="fill" class="full-width">

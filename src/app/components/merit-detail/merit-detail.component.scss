@@ -16,7 +16,7 @@
   h2 {
     font-size: 2.2rem;
     font-weight: 700;
-    color: #222;
+    color: #731717;
     margin: 0;
     border-bottom: 1px solid #858484;
     padding-bottom: 0.2rem;
@@ -33,18 +33,19 @@
   }
 }
 
-/* Description Section */
-.description-section {
+.description-section,
+.receiver-section {
   margin-bottom: 2rem;
 
   h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 550;
     color: #2c1602;
     margin-bottom: 0.6rem;
   }
 
-  .description {
+  .description,
+  .receiver {
     font-size: 1.1rem;
     color: #444;
     line-height: 1.6;
@@ -61,8 +62,8 @@
   margin-bottom: 2rem;
 
   h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 550;
     color: #2c1602;
     margin-bottom: 0.6rem;
   }
@@ -94,8 +95,8 @@
   margin-bottom: 2rem;
 
   h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 550;
     color: #2c1602;
     margin-bottom: 0.6rem;
   }
@@ -120,12 +121,25 @@
 }
 
 /* Optional: add subtle hover effects */
-.button-row button:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.button-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* space between text and icon */
 }
 
-/* Align icons inside buttons if you add any later */
 .button-row mat-icon {
   font-size: 20px;
-  line-height: 1;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .button-row mat-icon {
+    font-size: 26px;
+    height: 26px;
+    width: 26px;
+    line-height: 26px;
+  }
 }

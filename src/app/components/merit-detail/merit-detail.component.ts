@@ -46,14 +46,11 @@ export class MeritDetailComponent {
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      
       const result = await this.supabase.getMeritById(Number(id));
-      
-      console.log('result : ', this.videoUrls);
-      if (result) {        
+
+      if (result) {
         this.merit = result;
         this.getSanitizedPreviewUrls();
-        console.log('merit', this.merit);
       } else {
         this.router.navigate(['/merits']);
       }

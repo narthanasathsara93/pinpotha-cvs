@@ -1,5 +1,7 @@
 <div class="form-container" *ngIf="!loading; else loadingTemplate">
-  <div><h2>අංක {{merit.id}}</h2> </div>
+  <div *ngIf="merit.id" class="header-row">
+    <h2>අංක {{ merit.id }}</h2>
+  </div>
   <form (ngSubmit)="onSubmit()" #meritForm="ngForm">
     <!-- Title -->
     <mat-form-field appearance="fill" class="full-width">
@@ -16,6 +18,12 @@
         [(ngModel)]="merit.description"
         name="description"
       ></textarea>
+    </mat-form-field>
+
+    <!-- Receiver -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Receiver</mat-label>
+      <input matInput [(ngModel)]="merit.receiver" name="receiver" />
     </mat-form-field>
 
     <!-- Date -->

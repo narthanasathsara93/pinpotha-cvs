@@ -88,6 +88,7 @@ export class MeritFormComponent {
         title: '',
         description: '',
         type: '',
+        receiver: '',
         image_urls: [],
         date: '',
       };
@@ -122,16 +123,20 @@ export class MeritFormComponent {
       const finalImageUrls = [...this.existingImages, ...uploadedUrls].filter(
         Boolean
       );
+      const meritData = {
+        title: this.merit.title!,
+        description: this.merit.description!,
+        type: this.merit.type!,
+        receiver: this.merit.receiver || '',
+        date: this.merit.date!,
+        image_urls: finalImageUrls || [],
+        video_urls: this.getVideoUrls(this.merit.video_urls) || [],
+      };
 
       if (this.merit.id) {
         await this.supabase.updateMerit(parseInt(this.merit.id), {
           id: this.merit.id,
-          title: this.merit.title!,
-          description: this.merit.description!,
-          type: this.merit.type!,
-          date: this.merit.date!,
-          image_urls: finalImageUrls || [],
-          video_urls: this.getVideoUrls(this.merit.video_urls) || [],
+          ...meritData,
         });
 
         for (const url of this.removedImages) {
@@ -139,14 +144,7 @@ export class MeritFormComponent {
         }
         this.removedImages = [];
       } else {
-        await this.supabase.insertMerit({
-          title: this.merit.title,
-          description: this.merit.description,
-          type: this.merit.type,
-          date: this.merit.date,
-          image_urls: finalImageUrls || [],
-          video_urls: this.getVideoUrls(this.merit.video_urls) || [],
-        });
+        await this.supabase.insertMerit(meritData);
       }
       this.goBackToDetailPage();
     } catch (err) {
@@ -246,7 +244,7 @@ export class MeritFormComponent {
 
   addVideoUrl() {
     const url = this.newVideoUrl.trim();
-      if (url && !this.videoUrlsArray.includes(url)) {
+    if (url && !this.videoUrlsArray.includes(url)) {
       this.videoUrlsArray.push(url);
       this.newVideoUrl = '';
     }

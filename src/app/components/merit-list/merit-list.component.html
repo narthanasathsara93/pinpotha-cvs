@@ -38,7 +38,10 @@
     <div class="merit-info">
       <h1></h1>
       <h3 class="merit-title">{{ merit.title }}</h3>
-      <p class="merit-description">{{ merit.description }}</p>
+      <p class="merit-description">
+        {{ merit.description | slice : 0 : 50
+        }}{{ merit.description.length > 50 ? "..." : "" }}
+      </p>
       <p class="merit-date">{{ merit.date | date : "mediumDate" }}</p>
     </div>
   </div>

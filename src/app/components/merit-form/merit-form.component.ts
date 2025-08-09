@@ -125,7 +125,7 @@ export class MeritFormComponent {
       );
       const meritData = {
         title: this.merit.title!,
-        description: this.merit.description!,
+        description: this.merit.description,
         type: this.merit.type!,
         receiver: this.merit.receiver || '',
         date: this.merit.date!,

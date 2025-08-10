@@ -6,6 +6,7 @@ export const options = [
   { label: 'ආලෝක පූජා', value: 'aloka_pooja' },
   { label: 'අභය දාන ', value: 'abahay_dana' },
   { label: 'තෙරුවන්ට පූජා', value: 'theruwanta_pooja' },
+  { label: 'ස්වර්ණමාලී මහා සෑය', value: 'swarnamali_maha_seya' },
   { label: 'පිරිකර පූජා', value: 'pirikara_pooja' },
   { label: 'ශිලා සමාදාන', value: 'shila_samadana' },
   { label: 'වන්දනා ගමන්', value: 'vandana_gaman' },

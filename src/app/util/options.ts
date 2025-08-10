@@ -5,6 +5,7 @@ export const options = [
   { label: 'විහාර කර්මාන්ත', value: 'vihara_karmanta' },
   { label: 'ආලෝක පූජා', value: 'aloka_pooja' },
   { label: 'අභය දාන ', value: 'abahay_dana' },
+  { label: 'වස්සාන කාල සහ කඨිණ පින්කම්', value: 'kathina' },
   { label: 'තෙරුවන්ට පූජා', value: 'theruwanta_pooja' },
   { label: 'ස්වර්ණමාලී මහා සෑය', value: 'swarnamali_maha_seya' },
   { label: 'පිරිකර පූජා', value: 'pirikara_pooja' },

@@ -106,7 +106,6 @@ export class MeritFormComponent {
   async onSubmit() {
     if (
       !this.merit.title ||
-      !this.merit.description ||
       !this.merit.date ||
       !this.merit.type
     ) {
@@ -125,7 +124,7 @@ export class MeritFormComponent {
       );
       const meritData = {
         title: this.merit.title!,
-        description: this.merit.description,
+        description: this.merit.description ?? '',
         type: this.merit.type!,
         receiver: this.merit.receiver || '',
         date: this.merit.date!,

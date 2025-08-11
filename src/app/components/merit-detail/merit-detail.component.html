@@ -57,7 +57,7 @@
   <div class="button-row">
     <button
       mat-stroked-button
-      color="primary"
+      class="btn-back"
       (click)="onBack()"
       aria-label="Back"
     >
@@ -66,8 +66,8 @@
     </button>
     <ng-container *ngIf="isLoggedIn()">
       <button
-        mat-flat-button
-        color="accent"
+        mat-stroked-button
+        class="btn-edit"
         (click)="onEdit()"
         aria-label="Edit"
       >
@@ -75,8 +75,8 @@
         <mat-icon class="btn-icon">edit</mat-icon>
       </button>
       <button
-        mat-raised-button
-        color="warn"
+        mat-stroked-button
+        class="btn-delete"
         (click)="onDelete()"
         aria-label="Delete"
       >
@@ -88,6 +88,7 @@
 </div>
 
 <div class="bottom-container">
-  <h2>මෙය දකින්නෝ මේ පින් අනුමෝදන් වෙත්වා!!!</h2>
+  <h2>මෙය දකින සියල්ලෝ මේ පින් අනුමෝදන් වෙත්වා!</h2>
+  <h2>සාධු! සාධු!! සාධු!!!</h2>
   <h2>🪷🪷🪷</h2>
 </div>

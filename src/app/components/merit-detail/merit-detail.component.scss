@@ -144,6 +144,20 @@
   vertical-align: middle;
 }
 
+.btn-back {
+  background-color: rgba(15, 0, 83, 0.1);
+  color: rgb(4, 1, 59);
+}
+.btn-edit {
+  background-color: rgba(2, 88, 8, 0.1);
+  color: rgb(39, 59, 0);
+}
+
+.btn-delete {
+  background-color: rgba(139, 27, 4, 0.1);
+  color: rgb(82, 0, 0);
+}
+
 @media (max-width: 600px) {
   .button-row mat-icon {
     font-size: 26px;

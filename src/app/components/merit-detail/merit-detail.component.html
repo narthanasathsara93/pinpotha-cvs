@@ -15,7 +15,10 @@
   <!-- Description -->
   <section class="description-section">
     <h3>විස්තරය</h3>
-    <h2 class="description">{{ merit?.description }}</h2>
+    <div
+      class="description"
+      [innerHTML]="setSafeDescription(merit.description)"
+    ></div>
   </section>
 
   <!-- Receiver -->

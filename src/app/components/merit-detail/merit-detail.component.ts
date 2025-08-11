@@ -10,7 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeResourceUrl,
+  SafeHtml,
+} from '@angular/platform-browser';
 @Component({
   selector: 'app-merit-detail',
   standalone: true,
@@ -34,7 +38,7 @@ export class MeritDetailComponent {
   loading = true;
   error = '';
   selectedImageIndex = 0;
-
+  safeDescription!: SafeHtml;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -47,7 +51,6 @@ export class MeritDetailComponent {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const result = await this.supabase.getMeritById(Number(id));
-
       if (result) {
         this.merit = result;
         this.getSanitizedPreviewUrls();
@@ -60,6 +63,9 @@ export class MeritDetailComponent {
     }
   }
 
+  setSafeDescription(html: string) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
   prevImage() {
     if (this.selectedImageIndex > 0) {
       this.selectedImageIndex--;

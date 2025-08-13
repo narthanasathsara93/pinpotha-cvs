@@ -41,7 +41,7 @@ export class MeritListComponent {
   types: Option[] = options;
   private _selectedType = '';
 
-  pageSize = 50;
+  pageSize = 500;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 20, 30, 40, 50, 100, 150, 200, 300, 500, 1000];
 
@@ -64,6 +64,7 @@ export class MeritListComponent {
         this.pageIndex = this.scrollService.pageIndex;
         setTimeout(() => {
           window.scrollTo(0, this.scrollService.scrollY);
+          this.scrollService.scrollY = 0;
         });
       }
     } catch (e: any) {

@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { options } from '../../util/options';
+import { ScrollPositionService } from '../../services/scroll.service';
 export interface Option {
   label: string;
   value: string;
@@ -49,7 +50,8 @@ export class MeritListComponent {
   constructor(
     private supabase: SupabaseService,
     private router: Router,
-    private imageSerice: ImageService
+    private imageSerice: ImageService,
+    private scrollService: ScrollPositionService
   ) {}
 
   async ngOnInit() {
@@ -57,6 +59,13 @@ export class MeritListComponent {
     try {
       this.merits = await this.supabase.getMerits();
       this.defaultImageUrl = this.imageSerice.getDefaultImageUrl();
+
+      if (this.scrollService.scrollY > 0) {
+        this.pageIndex = this.scrollService.pageIndex;
+        setTimeout(() => {
+          window.scrollTo(0, this.scrollService.scrollY);
+        });
+      }
     } catch (e: any) {
       this.error = e.message || 'Failed to load merits';
     } finally {
@@ -101,6 +110,8 @@ export class MeritListComponent {
   }
 
   viewDetail(id: string) {
+    this.scrollService.scrollY = window.scrollY;
+    this.scrollService.pageIndex = this.pageIndex;
     this.router.navigate(['/merits', parseInt(id)]);
   }
 }

@@ -79,7 +79,7 @@ export class MeritDetailComponent {
   }
 
   onBack() {
-    this.router.navigate(['/merits']);
+    window.history.back();
   }
 
   onEdit() {

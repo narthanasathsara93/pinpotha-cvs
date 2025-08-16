@@ -93,12 +93,14 @@ export class MeritDetailComponent {
 
   async onDelete() {
     if (!confirm('Are you sure you want to delete this item?')) return;
+    this.loading = true;
     try {
       await this.supabase.deleteMerit(this.getMeritId());
       for (const url of this.merit.image_urls) {
         await this.deleteImageFromStorage(url);
       }
       this.openSnackBar('Merit deleted successfully');
+      this.loading = false;
       this.router.navigate(['/merits']);
     } catch (err: any) {
       this.openSnackBar('Failed to delete merit: ' + err.message);

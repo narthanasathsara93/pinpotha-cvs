@@ -98,7 +98,10 @@
   </div>
 </div>
 
-<div class="bottom-container" *ngIf="merit.status === 'DONE'">
+<div
+  class="bottom-container"
+  *ngIf="merit && !loading && merit.status === 'DONE'"
+>
   <h2>මෙය දකින සියල්ලෝ මේ පින් අනුමෝදන් වෙත්වා!</h2>
   <h2>සාධු! සාධු!! සාධු!!!</h2>
   <h2>🪷🪷🪷</h2>

@@ -117,28 +117,6 @@
     </div>
     <!-- Existing Images (from DB) -->
     <div class="image-section">
-      <div *ngIf="existingImages.length > 0">
-        <h4>ඡායාරූප</h4>
-        <div
-          *ngFor="let img of existingImages; let i = index"
-          class="image-upload-section"
-        >
-          <img
-            [src]="img"
-            alt="Existing Image {{ i + 1 }}"
-            class="image-preview"
-          />
-          <button
-            type="button"
-            mat-button
-            color="warn"
-            (click)="removeExistingImageLocally(i)"
-          >
-            X මකන්න
-          </button>
-        </div>
-      </div>
-
       <!-- Drag & Drop Image Upload -->
       <div
         class="drag-drop-area"
@@ -164,7 +142,7 @@
 
       <!-- New Images Previews -->
       <div *ngIf="selectedFiles.length > 0">
-        <h4>තෝරාගත් ({{selectedFiles.length}})</h4> 
+        <h4>තෝරාගත් ({{ selectedFiles.length }})</h4>
         <div
           *ngFor="let file of selectedFiles; let i = index"
           class="image-upload-section"
@@ -181,6 +159,28 @@
             mat-button
             color="warn"
             (click)="removeNewImageLocally(i)"
+          >
+            X මකන්න
+          </button>
+        </div>
+      </div>
+
+      <div class="existing-imgs" *ngIf="existingImages.length > 0">
+        <h4>දැනට අප්ලෝඩ් කළ ඡායාරූප</h4>
+        <div
+          *ngFor="let img of existingImages; let i = index"
+          class="image-upload-section"
+        >
+          <img
+            [src]="img"
+            alt="Existing Image {{ i + 1 }}"
+            class="image-preview"
+          />
+          <button
+            type="button"
+            mat-button
+            color="warn"
+            (click)="removeExistingImageLocally(i)"
           >
             X මකන්න
           </button>

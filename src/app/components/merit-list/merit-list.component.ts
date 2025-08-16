@@ -53,7 +53,7 @@ export class MeritListComponent {
   defaultColumn = 'type';
 
   statusOptions: Option[] = statusOptions;
-  public _selectedStatus: string = '';
+  public _selectedStatus: string = 'DONE';
 
   isOtherPage: boolean = false;
 

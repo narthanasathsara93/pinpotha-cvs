@@ -41,15 +41,30 @@
 
     .merit-date {
       font-style: italic;
+      font-weight: bold;
     }
 
     .status-badge {
+      font-weight: bold;
       padding: 2px 8px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      background-color: #f0f0f0;
-      color: #333;
+    }
+
+    .status-promised {
+      background-color: #fdd;
+      color: #b00;
+    }
+
+    .status-to-be-done {
+      background-color: #def;
+      color: #0366d6;
+    }
+
+    .status-abandoned {
+      background-color: #eee;
+      color: #555;
     }
   }
 }

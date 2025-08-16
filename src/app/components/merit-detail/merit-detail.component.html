@@ -6,7 +6,15 @@
   <header class="header-row">
     <h2>{{ merit?.title }}</h2>
     <div class="meta-row">
-      <span *ngIf="merit.status !== 'DONE'" class="status-badge">
+      <span
+        *ngIf="merit.status !== 'DONE'"
+        class="status-badge"
+        [ngClass]="{
+          'status-promised': merit.status === 'PROMISED',
+          'status-to-be-done': merit.status === 'TO_BE_DONE',
+          'status-abandoned': merit.status === 'ABANDONED'
+        }"
+        >>
         {{ getStatusLabel(merit.status) }}
       </span>
       <time class="merit-date">{{ merit.date | date : "mediumDate" }}</time>

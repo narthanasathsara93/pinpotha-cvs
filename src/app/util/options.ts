@@ -22,7 +22,7 @@ export const statusOptions = [
   { label: 'සම්පූර්ණයි', value: 'DONE' },
   { label: 'භාර ගත්', value: 'PROMISED' },
   { label: 'අදහස් කර ගත්', value: 'TO_BE_DONE' },
-  { label: 'අත්හිටවූ ', value: 'SUSPENDED' },
+  { label: 'අත්හිටවූ ', value: 'ABANDONED' },
 ]
 
 export interface Option {

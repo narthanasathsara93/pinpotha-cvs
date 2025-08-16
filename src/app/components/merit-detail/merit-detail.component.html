@@ -1,7 +1,9 @@
-<div *ngIf="loading">Loading...</div>
+<div *ngIf="loading" class="loading-spinner">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
 <div *ngIf="error">{{ error }}</div>
 
-<div *ngIf="merit" class="detail-container">
+<div *ngIf="merit && !loading" class="detail-container">
   <!-- Title -->
   <header class="header-row">
     <h2>{{ merit?.title }}</h2>

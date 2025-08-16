@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
 import { statusOptions, Option } from '../../util/options';
@@ -28,6 +29,7 @@ import {
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './merit-detail.component.html',
   styleUrl: './merit-detail.component.scss',

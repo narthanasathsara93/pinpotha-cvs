@@ -5,13 +5,13 @@
   <form (ngSubmit)="onSubmit()" #meritForm="ngForm">
     <!-- Title -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Title</mat-label>
+      <mat-label>මාතෘකාව</mat-label>
       <input matInput required [(ngModel)]="merit.title" name="title" />
     </mat-form-field>
 
     <!-- Description -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Description</mat-label>
+      <mat-label>විස්තරය</mat-label>
       <textarea
         matInput
         rows="5"
@@ -22,13 +22,13 @@
 
     <!-- Receiver -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Receiver</mat-label>
+      <mat-label>ප්‍රතිග්‍රාහකයා/සංවිධායකයා</mat-label>
       <input matInput [(ngModel)]="merit.receiver" name="receiver" />
     </mat-form-field>
 
     <!-- Date -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Date</mat-label>
+      <mat-label>දිනය</mat-label>
       <input
         matInput
         [matDatepicker]="picker"
@@ -46,11 +46,27 @@
 
     <!-- Type -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Type</mat-label>
+      <mat-label>වර්ගය</mat-label>
       <select matNativeControl required [(ngModel)]="merit.type" name="type">
-        <option value="" disabled>Select type</option>
+        <option value="" disabled>තෝරන්න</option>
         <option *ngFor="let option of types" [value]="option.value">
           {{ option.label }}
+        </option>
+      </select>
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>තත්ත්වය</mat-label>
+      <select
+        matNativeControl
+        required
+        [(ngModel)]="merit.status"
+        name="status"
+      >
+        <option value="" disabled>තත්ත්වය තෝරන්න</option>
+        <option *ngFor="let status of statusOptions" [value]="status.value">
+          {{ status.label }}
         </option>
       </select>
     </mat-form-field>
@@ -58,7 +74,7 @@
     <!-- Video Urls -->
     <div class="video-url-section">
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Add Video URL</mat-label>
+        <mat-label>වීඩියෝ ලින්ක්</mat-label>
         <input
           matInput
           [(ngModel)]="newVideoUrl"
@@ -75,7 +91,7 @@
         (click)="addVideoUrl()"
         [disabled]="!newVideoUrl.trim()"
       >
-        Add URL
+        එකතු කරන්න
       </button>
 
       <div *ngIf="videoUrlsArray.length > 0" class="url-list">
@@ -102,7 +118,7 @@
     <!-- Existing Images (from DB) -->
     <div class="image-section">
       <div *ngIf="existingImages.length > 0">
-        <h4>Existing Images</h4>
+        <h4>ඡායාරූප</h4>
         <div
           *ngFor="let img of existingImages; let i = index"
           class="image-upload-section"
@@ -118,14 +134,14 @@
             color="warn"
             (click)="removeExistingImageLocally(i)"
           >
-            Remove
+           X මකන්න
           </button>
         </div>
       </div>
 
       <!-- New Images (not yet uploaded) -->
       <div *ngIf="selectedFiles.length > 0">
-        <h4>New Images</h4>
+        <h4>ඡායාරූප</h4>
         <div
           *ngFor="let file of selectedFiles; let i = index"
           class="image-upload-section"
@@ -143,7 +159,7 @@
             color="warn"
             (click)="removeNewImageLocally(i)"
           >
-            Remove
+           X මකන්න
           </button>
         </div>
       </div>
@@ -159,7 +175,7 @@
         />
         <label for="imageUpload" class="custom-upload-button">
           <mat-icon>add_photo_alternate</mat-icon>
-          Add Image
+          ඡායාරූප එකතු කරන්න
         </label>
       </div>
     </div>

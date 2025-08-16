@@ -20,15 +20,37 @@
 }
 /* Header Title */
 .header-row {
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 
   h2 {
     font-size: 2.2rem;
     font-weight: 700;
     color: #731717;
-    margin: 0;
+    margin: 0 0 0.3rem 0;
     border-bottom: 1px solid #858484;
     padding-bottom: 0.2rem;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: 0.4rem;
+
+    .merit-date {
+      font-style: italic;
+    }
+
+    .status-badge {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background-color: #f0f0f0;
+      color: #333;
+    }
   }
 }
 

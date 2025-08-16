@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';
 export const routes: Routes = [
   { path: '', redirectTo: 'merits', pathMatch: 'full' },
   { path: 'merits', component: MeritListComponent },
+  { path: 'merits/other', component: MeritListComponent },
   {
     path: 'merits/add',
     component: MeritFormComponent,

@@ -5,12 +5,13 @@
   <!-- Title -->
   <header class="header-row">
     <h2>{{ merit?.title }}</h2>
+    <div class="meta-row">
+      <span *ngIf="merit.status !== 'DONE'" class="status-badge">
+        {{ getStatusLabel(merit.status) }}
+      </span>
+      <time class="merit-date">{{ merit.date | date : "mediumDate" }}</time>
+    </div>
   </header>
-
-  <!-- Date -->
-  <section class="date-section">
-    <time class="merit-date">{{ merit.date | date : "mediumDate" }}</time>
-  </section>
 
   <!-- Description -->
   <section class="description-section">
@@ -87,7 +88,7 @@
   </div>
 </div>
 
-<div class="bottom-container">
+<div class="bottom-container" *ngIf="merit.status === 'DONE'">
   <h2>මෙය දකින සියල්ලෝ මේ පින් අනුමෝදන් වෙත්වා!</h2>
   <h2>සාධු! සාධු!! සාධු!!!</h2>
   <h2>🪷🪷🪷</h2>

@@ -15,11 +15,8 @@ import { MatListModule } from '@angular/material/list';
 
 import { Router } from '@angular/router';
 import { Merit } from '../../models/merits.model';
-import { options } from '../../util/options';
-export interface Option {
-  label: string;
-  value: string;
-}
+import { options, statusOptions, Option } from '../../util/options';
+
 @Component({
   selector: 'app-merit-form',
   standalone: true,
@@ -44,10 +41,13 @@ export class MeritFormComponent {
     title: '',
     description: '',
     type: '',
+    status: '',
     image_urls: [],
     date: '',
   };
   types: Option[] = options;
+  statusOptions: Option[] = statusOptions;
+
   previewUrl: string | null = null;
   filePreviews: string[] = [];
   imageUrl: string | null = null;
@@ -57,6 +57,8 @@ export class MeritFormComponent {
   removedImages: string[] = [];
   newVideoUrl: string = '';
   videoUrlsArray: string[] = [];
+  defaultStatus: string = 'DONE';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -88,6 +90,7 @@ export class MeritFormComponent {
         title: '',
         description: '',
         type: '',
+        status: this.defaultStatus,
         receiver: '',
         image_urls: [],
         date: '',
@@ -127,6 +130,7 @@ export class MeritFormComponent {
         type: this.merit.type!,
         receiver: this.merit.receiver || '',
         date: this.merit.date!,
+        status: this.merit.status || this.defaultStatus,
         image_urls: finalImageUrls || [],
         video_urls: this.videoUrlsArray || [],
       };

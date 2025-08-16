@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { options } from '../../util/options';
+import { options, statusOptions } from '../../util/options';
 import { ScrollPositionService } from '../../services/scroll.service';
 
 export interface Option {
@@ -41,6 +41,7 @@ export class MeritListComponent {
   error = '';
 
   types: Option[] = options;
+
   private _selectedType = '';
 
   pageSize = 20;
@@ -51,6 +52,11 @@ export class MeritListComponent {
   defaultImageUrl = '';
   defaultColumn = 'type';
 
+  statusOptions: Option[] = statusOptions;
+  public _selectedStatus: string = '';
+
+  isOtherPage: boolean = false;
+
   constructor(
     private supabase: SupabaseService,
     private router: Router,
@@ -60,6 +66,13 @@ export class MeritListComponent {
   ) {}
 
   ngOnInit() {
+    this.route.url.subscribe((url) => {
+      if (url.some((segment) => segment.path === 'other')) {
+        this.isOtherPage = true;
+        this.selectedStatus = 'PROMISED';
+      }
+    });
+
     this.route.queryParams.subscribe((params) => {
       this._selectedType = params['type'] || '';
       this.pageIndex = +params['page'] || 0;
@@ -76,10 +89,11 @@ export class MeritListComponent {
       const { data, count } = await this.supabase.getMeritsPaged(
         this.pageIndex,
         this.pageSize,
-        this._selectedType,
-        this.defaultColumn
+        this.defaultColumn,
+        this._selectedStatus,
+        this._selectedType
       );
-
+   
       this.merits = data;
       this.totalCount = count;
 
@@ -99,12 +113,22 @@ export class MeritListComponent {
   get selectedType() {
     return this._selectedType;
   }
+
   set selectedType(value: string) {
     this._selectedType = value;
     this.pageIndex = 0;
     this.updateQueryParams();
   }
 
+  get selectedStatus() {
+    return this._selectedStatus;
+  }
+
+  set selectedStatus(value: string) {
+    this._selectedStatus = value;
+    this.pageIndex = 0;
+    this.updateQueryParams(); // triggers reload
+  }
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;

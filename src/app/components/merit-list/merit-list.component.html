@@ -10,7 +10,7 @@
       <div class="total-count">එකතුව : {{ totalCount }}</div>
     </section>
 
-    <mat-form-field appearance="fill" class="filter-select">
+    <mat-form-field *ngIf="!isOtherPage" appearance="fill" class="filter-select">
       <mat-select
         [value]="selectedType"
         (valueChange)="selectedType = $event"
@@ -18,6 +18,18 @@
       >
         <mat-option value="">සියලුම</mat-option>
         <mat-option *ngFor="let t of types" [value]="t.value">{{
+          t.label
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="isOtherPage" appearance="fill" class="filter-select">
+      <mat-select
+         [(value)]="selectedStatus"
+        (valueChange)="selectedStatus = $event"
+        placeholder="භාර ගත්"
+      >
+        <mat-option *ngFor="let t of statusOptions.slice(1)" [value]="t.value">{{
           t.label
         }}</mat-option>
       </mat-select>

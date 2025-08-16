@@ -7,8 +7,9 @@ export class SupabaseService {
   async getMeritsPaged(
     pageIndex: number,
     pageSize: number,
-    type?: string,
-    column: string = 'type'
+    column: string,
+    status: string,
+    type?: string
   ): Promise<{ data: Merit[]; count: number }> {
     const from = pageIndex * pageSize;
     const to = from + pageSize - 1;
@@ -23,7 +24,13 @@ export class SupabaseService {
       query = query.eq(column, type);
     }
 
+    if (status && status !== '') {
+       console.log('Query status:', status);
+      query = query.eq('status', status);
+    }
+
     const { data, error, count } = await query;
+   
     if (error) throw error;
     return { data: data || [], count: count || 0 };
   }

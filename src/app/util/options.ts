@@ -16,3 +16,16 @@ export const options = [
   { label: 'සෞඛ්‍ය සම්බන්ධ', value: 'saukhya_sambandha' },
   { label: 'විවිධ', value: 'vividha' },
 ];
+
+
+export const statusOptions = [
+  { label: 'සම්පූර්ණයි', value: 'DONE' },
+  { label: 'භාර ගත්', value: 'PROMISED' },
+  { label: 'අදහස් කර ගත්', value: 'TO_BE_DONE' },
+  { label: 'අත්හිටවූ ', value: 'SUSPENDED' },
+]
+
+export interface Option {
+  label: string;
+  value: string;
+}

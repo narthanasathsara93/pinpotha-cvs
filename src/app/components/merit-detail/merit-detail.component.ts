@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+
+import { statusOptions, Option } from '../../util/options';
 import {
   DomSanitizer,
   SafeResourceUrl,
@@ -39,6 +41,7 @@ export class MeritDetailComponent {
   error = '';
   selectedImageIndex = 0;
   safeDescription!: SafeHtml;
+  statusOptions: Option[] = statusOptions;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -139,4 +142,10 @@ export class MeritDetailComponent {
       })
       .filter((url): url is SafeResourceUrl => url !== null);
   }
+
+getStatusLabel(value: string): string {
+  const option = this.statusOptions.find((o) => o.value === value);
+  return option ? option.label : value;
+}
+
 }

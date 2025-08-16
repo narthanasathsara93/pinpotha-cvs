@@ -25,7 +25,6 @@ export class SupabaseService {
     }
 
     if (status && status !== '') {
-       console.log('Query status:', status);
       query = query.eq('status', status);
     }
 

@@ -125,7 +125,7 @@ export class MeritFormComponent {
       });
     }
   }
-  
+
   formatDateWithoutTimezone(date: string | Date): string {
     const d = date instanceof Date ? date : new Date(date);
     const year = d.getFullYear();
@@ -193,12 +193,17 @@ export class MeritFormComponent {
     }
 
     for (const file of this.selectedFiles) {
-      const compressedFile = await this.imageService.compressImage(file, 300);
+      const maxSizeKB = (file.size * (2 / 3)) / 1000;
+      const compressedFile = await this.imageService.compressImage(
+        file,
+        maxSizeKB
+      );
       const url = await this.supabase.uploadImage(compressedFile);
       if (url) {
         uploadedUrls.push(url);
       }
     }
+    
     return uploadedUrls;
   }
 

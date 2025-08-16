@@ -1,70 +1,70 @@
 import { Injectable } from '@angular/core';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ImageService {
-  async compressImage(
-    file: File,
-    maxSizeKB = 500,
-    maxWidth = 1024,
-    maxHeight = 1024
-  ): Promise<File> {
-    return new Promise((resolve, reject) => {
+  constructor() {}
+
+ compressImage(file: File, maxSizeKB: number = 200): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = (event: any) => {
       const img = new Image();
-      const url = URL.createObjectURL(file);
+      img.src = event.target.result;
 
       img.onload = () => {
-        URL.revokeObjectURL(url);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
 
-        let { width, height } = img;
-        if (width > maxWidth || height > maxHeight) {
-          const ratio = Math.min(maxWidth / width, maxHeight / height);
-          width = width * ratio;
-          height = height * ratio;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject('Could not get canvas context');
+          return;
         }
 
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d')!;
-        ctx.drawImage(img, 0, 0, width, height);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
 
-        let quality = 0.8;
+        let quality = 0.9;
 
-        function tryCompress() {
+        const tryCompress = () => {
           canvas.toBlob(
             (blob) => {
               if (!blob) {
-                reject(new Error('Compression failed'));
+                reject('Compression failed');
                 return;
               }
 
-              if (blob.size / 1024 <= maxSizeKB || quality < 0.1) {
-                const compressedFile = new File([blob], file.name, {
-                  type: file.type,
-                });
-                resolve(compressedFile);
-              } else {
+              // Check size
+              if (blob.size / 1024 > maxSizeKB && quality > 0.1) {
                 quality -= 0.1;
                 tryCompress();
+              } else {
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
               }
             },
             'image/jpeg',
             quality
           );
-        }
+        };
 
         tryCompress();
       };
 
-      img.onerror = (e) => {
-        URL.revokeObjectURL(url);
-        reject(e);
-      };
+      img.onerror = (err) => reject(err);
+    };
 
-      img.src = url;
-    });
-  }
+    reader.onerror = (err) => reject(err);
+  });
+}
+
 
   getDefaultImageUrl(): string {
     return 'https://exhpdkktrnbduubqjyso.supabase.co/storage/v1/object/public/merit-images/lotus_icon.jpg';

@@ -164,8 +164,24 @@
           </button>
         </div>
       </div>
+    </div>
 
-      <div class="existing-imgs" *ngIf="existingImages.length > 0">
+    <!-- Buttons set 1-->
+    <div *ngIf="existingImages.length > 3" class="button-row">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="meritForm.invalid"
+      >
+        සුරකින්න
+      </button>
+      <button mat-button color="warn" type="button" (click)="onCancel()">
+        අවලංගු කරන්න
+      </button>
+    </div>
+    <div class="image-section existing-imgs">
+      <div *ngIf="existingImages.length > 0">
         <h4>දැනට අප්ලෝඩ් කළ ඡායාරූප</h4>
         <div
           *ngFor="let img of existingImages; let i = index"
@@ -187,8 +203,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Buttons -->
+    <!-- Buttons set 2-->
     <div class="button-row">
       <button
         mat-raised-button
@@ -196,10 +211,10 @@
         type="submit"
         [disabled]="meritForm.invalid"
       >
-        Save
+        සුරකින්න
       </button>
       <button mat-button color="warn" type="button" (click)="onCancel()">
-        Cancel
+        අවලංගු කරන්න
       </button>
     </div>
   </form>

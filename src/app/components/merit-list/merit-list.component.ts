@@ -44,7 +44,8 @@ export class MeritListComponent {
 
   private _selectedType = '';
 
-  pageSize = 20;
+  defaultPageSize = 100;
+  pageSize = this.defaultPageSize;
   pageIndex = 0;
   totalCount = 0;
   pageSizeOptions = [5, 10, 20, 30, 40, 50, 100];
@@ -76,7 +77,7 @@ export class MeritListComponent {
     this.route.queryParams.subscribe((params) => {
       this._selectedType = params['type'] || '';
       this.pageIndex = +params['page'] || 0;
-      this.pageSize = +params['size'] || 20;
+      this.pageSize = +params['size'] || this.defaultPageSize;
       this.loadMerits();
     });
 

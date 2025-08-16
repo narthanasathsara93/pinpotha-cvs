@@ -147,7 +147,7 @@
         (dragleave)="onDragLeave($event)"
         [class.dragging]="isDragging"
       >
-        <p>Drag & Drop images here, or click to select</p>
+        <p>තෝරන්න හෝ ඇද දමන්න</p>
         <input
           id="imageUpload"
           type="file"
@@ -158,13 +158,13 @@
         />
         <label for="imageUpload" class="custom-upload-button">
           <mat-icon>add_photo_alternate</mat-icon>
-          Choose Images
+          තෝරන්න
         </label>
       </div>
 
       <!-- New Images Previews -->
       <div *ngIf="selectedFiles.length > 0">
-        <h4>Selected Images</h4>
+        <h4>තෝරාගත් ({{selectedFiles.length}})</h4> 
         <div
           *ngFor="let file of selectedFiles; let i = index"
           class="image-upload-section"

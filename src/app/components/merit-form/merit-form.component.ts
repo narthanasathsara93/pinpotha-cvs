@@ -58,7 +58,7 @@ export class MeritFormComponent {
   newVideoUrl: string = '';
   videoUrlsArray: string[] = [];
   defaultStatus: string = 'DONE';
-
+  isDragging = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -98,6 +98,34 @@ export class MeritFormComponent {
     }
   }
 
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files) {
+      Array.from(event.dataTransfer.files).forEach((file) => {
+        if (file.type.startsWith('image/')) {
+          this.selectedFiles.push(file);
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.filePreviews.push(reader.result as string);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  }
+  
   formatDateWithoutTimezone(date: string | Date): string {
     const d = date instanceof Date ? date : new Date(date);
     const year = d.getFullYear();

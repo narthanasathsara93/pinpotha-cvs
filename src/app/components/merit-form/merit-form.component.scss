@@ -8,7 +8,7 @@
   font-family: "Roboto", sans-serif;
 }
 
-.file-name{
+.file-name {
   font-size: 12px;
 }
 mat-form-field {
@@ -123,4 +123,26 @@ mat-list-item {
 
 .custom-upload-button mat-icon {
   font-size: 20px;
+}
+
+.drag-drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &.dragging {
+    background: #e6f7ff;
+    border-color: #2196f3;
+  }
+}
+
+.image-preview {
+  max-width: 150px;
+  max-height: 150px;
+  margin: 8px;
+  border-radius: 6px;
+  object-fit: cover;
 }

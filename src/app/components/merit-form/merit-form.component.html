@@ -134,14 +134,37 @@
             color="warn"
             (click)="removeExistingImageLocally(i)"
           >
-           X මකන්න
+            X මකන්න
           </button>
         </div>
       </div>
 
-      <!-- New Images (not yet uploaded) -->
+      <!-- Drag & Drop Image Upload -->
+      <div
+        class="drag-drop-area"
+        (drop)="onDrop($event)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        [class.dragging]="isDragging"
+      >
+        <p>Drag & Drop images here, or click to select</p>
+        <input
+          id="imageUpload"
+          type="file"
+          (change)="onImageSelected($event)"
+          accept="image/*"
+          multiple
+          hidden
+        />
+        <label for="imageUpload" class="custom-upload-button">
+          <mat-icon>add_photo_alternate</mat-icon>
+          Choose Images
+        </label>
+      </div>
+
+      <!-- New Images Previews -->
       <div *ngIf="selectedFiles.length > 0">
-        <h4>ඡායාරූප</h4>
+        <h4>Selected Images</h4>
         <div
           *ngFor="let file of selectedFiles; let i = index"
           class="image-upload-section"
@@ -159,26 +182,12 @@
             color="warn"
             (click)="removeNewImageLocally(i)"
           >
-           X මකන්න
+            X මකන්න
           </button>
         </div>
       </div>
-
-      <!-- Image Upload Button -->
-      <div class="custom-upload-wrapper">
-        <input
-          id="imageUpload"
-          type="file"
-          (change)="onImageSelected($event)"
-          accept="image/*"
-          hidden
-        />
-        <label for="imageUpload" class="custom-upload-button">
-          <mat-icon>add_photo_alternate</mat-icon>
-          ඡායාරූප එකතු කරන්න
-        </label>
-      </div>
     </div>
+
     <!-- Buttons -->
     <div class="button-row">
       <button

@@ -18,25 +18,40 @@ mat-toolbar {
   font-weight: bold;
   font-size: 1.9rem;
   text-decoration: none;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
 }
 
+.logo:hover {
+  color: #1a0202; /* keep same or slightly brighter */
+  text-shadow: 0 0 5px #f7b69c, 0 0 10px #f7b69c, 0 0 15px #f7b69c;
+}
 .spacer {
   flex: 1 1 auto;
 }
 
 .menu {
   display: flex;
-    button {
-     background-color: #933c10;
-     margin-left: 1%;
-    }
-    button:hover {
-      background-color: #421b07;
-      color: white;
-    }
-    .btn-new{
-      border: 1px solid;
-    }
+  button {
+    margin-left: 1%;
+  }
+  button:hover {
+    background-color: #421b07;
+    color: white;
+  }
+  .btn-new {
+    background-color: #0288d1;
+    // border: 1px solid;
+  }
+  .btn-other {
+    background-color: #6c757d;
+  }
+  .btn-login {
+    border: 1px solid;
+  }
+  .btn-logout {
+    border: 1px solid;
+    // background-color: #630401;
+  }
 }
 
 /* Make toolbar and buttons responsive */

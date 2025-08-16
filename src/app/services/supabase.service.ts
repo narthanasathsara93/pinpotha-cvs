@@ -1,26 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Merit } from '../models/merits.model';
-import {
-  supabase,
-  bucketName,
-  mertisTable,
-  supabaseUrl,
-} from '../util/supabase-client';
+import { supabase, bucketName, mertisTable } from '../util/supabase-client';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
-  async getMerits(): Promise<Merit[]> {
-    // const cached = localStorage.getItem('meritsCache');
-    // if (cached) {
-    //   return JSON.parse(cached) as Merit[];
-    // }
-    const { data, error } = await supabase
-      .from(mertisTable)
-      .select('*')
-      .order('date', { ascending: false });
-    if (error || !data) throw new Error('Failed to fetch merits');
-    localStorage.setItem('meritsCache', JSON.stringify(data));
-    return data;
+  async getMeritsPaged(
+    pageIndex: number,
+    pageSize: number,
+    type?: string,
+    column: string = 'type'
+  ): Promise<{ data: Merit[]; count: number }> {
+    const from = pageIndex * pageSize;
+    const to = from + pageSize - 1;
+
+    let query = supabase
+      .from('merits')
+      .select('*', { count: 'exact' })
+      .order('date', { ascending: false })
+      .range(from, to);
+
+    if (type && type !== '') {
+      query = query.eq(column, type);
+    }
+
+    const { data, error, count } = await query;
+    if (error) throw error;
+    return { data: data || [], count: count || 0 };
   }
 
   async getMeritById(id: number): Promise<any> {

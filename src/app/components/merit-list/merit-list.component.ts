@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { SupabaseService } from '../../services/supabase.service';
 import { ImageService } from './../../services/image.service';
 import { Merit } from '../../models/merits.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,10 +13,12 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { options } from '../../util/options';
 import { ScrollPositionService } from '../../services/scroll.service';
+
 export interface Option {
   label: string;
   value: string;
 }
+
 @Component({
   selector: 'app-merit-list',
   standalone: true,
@@ -41,27 +43,47 @@ export class MeritListComponent {
   types: Option[] = options;
   private _selectedType = '';
 
-  pageSize = 500;
+  pageSize = 20;
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 20, 30, 40, 50, 100, 150, 200, 300, 500, 1000];
+  totalCount = 0;
+  pageSizeOptions = [5, 10, 20, 30, 40, 50, 100];
 
   defaultImageUrl = '';
+  defaultColumn = 'type';
 
   constructor(
     private supabase: SupabaseService,
     private router: Router,
-    private imageSerice: ImageService,
+    private route: ActivatedRoute,
+    private imageService: ImageService,
     private scrollService: ScrollPositionService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this._selectedType = params['type'] || '';
+      this.pageIndex = +params['page'] || 0;
+      this.pageSize = +params['size'] || 20;
+      this.loadMerits();
+    });
+
+    this.defaultImageUrl = this.imageService.getDefaultImageUrl();
+  }
+
+  async loadMerits() {
     this.loading = true;
     try {
-      this.merits = await this.supabase.getMerits();
-      this.defaultImageUrl = this.imageSerice.getDefaultImageUrl();
+      const { data, count } = await this.supabase.getMeritsPaged(
+        this.pageIndex,
+        this.pageSize,
+        this._selectedType,
+        this.defaultColumn
+      );
+
+      this.merits = data;
+      this.totalCount = count;
 
       if (this.scrollService.scrollY > 0) {
-        this.pageIndex = this.scrollService.pageIndex;
         setTimeout(() => {
           window.scrollTo(0, this.scrollService.scrollY);
           this.scrollService.scrollY = 0;
@@ -80,39 +102,32 @@ export class MeritListComponent {
   set selectedType(value: string) {
     this._selectedType = value;
     this.pageIndex = 0;
-  }
-
-  get filteredMerits(): Merit[] {
-    return this.selectedType
-      ? this.merits.filter((m) => m.type === this.selectedType)
-      : this.merits;
-  }
-
-  get pagedMerits(): Merit[] {
-    const start = this.pageIndex * this.pageSize;
-    return this.filteredMerits.slice(start, start + this.pageSize);
-  }
-
-  get totalFilteredCount(): number {
-    return this.filteredMerits.length;
+    this.updateQueryParams();
   }
 
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-  }
-
-  onTypeChange() {
-    this.pageIndex = 0;
-  }
-
-  applyFilters() {
-    this.pageIndex = 0;
+    this.updateQueryParams();
   }
 
   viewDetail(id: string) {
     this.scrollService.scrollY = window.scrollY;
     this.scrollService.pageIndex = this.pageIndex;
     this.router.navigate(['/merits', parseInt(id)]);
+  }
+
+  updateQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        type: this._selectedType || null,
+        page: this.pageIndex || null,
+        size: this.pageSize || null,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    this.loadMerits();
   }
 }

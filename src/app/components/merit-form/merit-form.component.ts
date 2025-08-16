@@ -104,11 +104,7 @@ export class MeritFormComponent {
   }
 
   async onSubmit() {
-    if (
-      !this.merit.title ||
-      !this.merit.date ||
-      !this.merit.type
-    ) {
+    if (!this.merit.title || !this.merit.date || !this.merit.type) {
       alert('Please fill all required fields.');
       return;
     }
@@ -122,6 +118,9 @@ export class MeritFormComponent {
       const finalImageUrls = [...this.existingImages, ...uploadedUrls].filter(
         Boolean
       );
+      if (Array.isArray(this.merit.video_urls)) {
+        this.videoUrlsArray = this.merit.video_urls;
+      }
       const meritData = {
         title: this.merit.title!,
         description: this.merit.description ?? '',
@@ -129,7 +128,7 @@ export class MeritFormComponent {
         receiver: this.merit.receiver || '',
         date: this.merit.date!,
         image_urls: finalImageUrls || [],
-        video_urls: this.getVideoUrls(this.merit.video_urls) || [],
+        video_urls: this.videoUrlsArray || [],
       };
 
       if (this.merit.id) {

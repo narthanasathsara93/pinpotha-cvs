@@ -7,7 +7,7 @@
 <div class="merit-list-container" *ngIf="!loading && !error">
   <div class="filter-row">
     <section>
-      <div class="total-count">එකතුව : {{ filteredMerits.length }}</div>
+      <div class="total-count">එකතුව : {{ totalCount }}</div>
     </section>
 
     <mat-form-field appearance="fill" class="filter-select">
@@ -26,7 +26,8 @@
 
   <div
     class="merit-item"
-    *ngFor="let merit of pagedMerits; let i = index"
+    totalFilteredCount
+    *ngFor="let merit of merits; let i = index"
     (click)="viewDetail(merit.id)"
   >
     <div class="merit-number">{{ pageIndex * pageSize + i + 1 }}</div>
@@ -47,7 +48,7 @@
   </div>
 
   <mat-paginator
-    [length]="totalFilteredCount"
+    [length]="totalCount"
     [pageSize]="pageSize"
     [pageIndex]="pageIndex"
     [pageSizeOptions]="pageSizeOptions"

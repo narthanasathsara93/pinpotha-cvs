@@ -3,20 +3,32 @@
   margin: 2rem auto; /* center horizontally with margin top/bottom */
   padding: 0 1rem;
 }
-
-.merit-item {
-  :hover {
-    cursor: pointer;
-    background-color: #f5f5f5; /* subtle hover effect */
-  }
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: flex-start;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1rem;
+.merit-item,
+.filter-row {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.7),
+    rgba(245, 247, 238, 0.7)
+  );
 }
 
+.merit-item:hover {
+  cursor: pointer;
+  background: linear-gradient(to right, #fff3de, #ffffff);
+  box-shadow: #555;
+}
+.merit-item {
+  display: flex;
+  gap: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  border-bottom: 2px solid #c2c19b;
+  padding-bottom: 1rem;
+}
+.filter-row {
+  border-radius: 8px;
+}
 .merit-number {
   font-weight: bold;
   width: 24px;
@@ -24,10 +36,11 @@
 }
 
 .merit-image {
+  margin-top: 2%;
   width: 120px;
-  height: 90px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
@@ -65,14 +78,16 @@
 
 .total-count {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   color: #d50606;
-  max-width: 700px;
+  text-shadow: #464646;
+  max-width: 1000px;
+  width: 200px;
   padding: 0.7rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(14, 14, 14, 0.08);
+  margin-left: 1%;
+  // border-radius: 12px;
+  // box-shadow: 0 4px 12px rgba(14, 14, 14, 0.08);
 }
-
 
 .filter-select {
   height: 68px !important;

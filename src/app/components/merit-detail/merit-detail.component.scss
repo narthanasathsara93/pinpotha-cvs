@@ -113,6 +113,13 @@
 
 /* Video List Section */
 .video-list {
+  // new
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9; /* keeps correct ratio */
+  max-width: 10%;
+  border: none;
+  // new
   margin-bottom: 2rem;
 
   h3 {

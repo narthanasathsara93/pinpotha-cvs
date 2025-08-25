@@ -49,9 +49,11 @@
 }
 
 .merit-title {
+  font-family: "Abhaya Libre", serif;
   margin: 0 0 0.3rem 0;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #410202;
 }
 
 .merit-description {
@@ -77,8 +79,9 @@
 }
 
 .total-count {
+  font-family: "Abhaya Libre", serif;
   font-weight: bold;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   color: #d50606;
   text-shadow: #464646;
   max-width: 1000px;

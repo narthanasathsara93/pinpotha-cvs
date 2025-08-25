@@ -13,7 +13,6 @@
   padding: 2rem 2.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  font-family: Arial, sans-serif;
   color: #333;
 }
 
@@ -26,12 +25,17 @@
   padding: 2rem 2.5rem;
   color: #731717;
 }
+.bottom-container h2 {
+  font-family: "Abhaya Libre", serif;
+  font-size: 2rem;
+}
 /* Header Title */
 .header-row {
   margin-bottom: 1rem;
 
   h2 {
-    font-size: 2.2rem;
+    font-family: "Abhaya Libre", serif;
+    font-size: 2.8rem;
     font-weight: 700;
     color: #731717;
     margin: 0 0 0.3rem 0;
@@ -49,7 +53,7 @@
 
     .merit-date {
       font-style: italic;
-      font-weight: bold;
+      margin-bottom: 1.5%;
     }
 
     .status-badge {
@@ -92,7 +96,8 @@
   margin-bottom: 2rem;
 
   h3 {
-    font-size: 1rem;
+    font-family: "Abhaya Libre", serif;
+    font-size: 1.8rem;
     font-weight: 550;
     color: #2c1602;
     margin-bottom: 0.6rem;
@@ -156,7 +161,8 @@
   margin-bottom: 2rem;
 
   h3 {
-    font-size: 1rem;
+    font-family: "Abhaya Libre", serif;
+    font-size: 1.8rem;
     font-weight: 550;
     color: #2c1602;
     margin-bottom: 0.6rem;

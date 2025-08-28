@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from './components/nav-bar/nav-bar.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,4 @@ import { Router, RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'pinpotha';
-  constructor(private router: Router) {
-    this.router.navigate(['/merits']);
-  }
 }

@@ -13,6 +13,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { options, statusOptions } from '../../util/options';
 import { ScrollPositionService } from '../../services/scroll.service';
+import { StripHtmlPipe } from '../../pipe/strip-html.pipe';
 
 export interface Option {
   label: string;
@@ -31,6 +32,7 @@ export interface Option {
     MatOptionModule,
     MatPaginatorModule,
     DatePipe,
+    StripHtmlPipe,
   ],
   templateUrl: './merit-list.component.html',
   styleUrl: './merit-list.component.scss',
@@ -39,7 +41,6 @@ export class MeritListComponent {
   merits: Merit[] = [];
   loading = false;
   error = '';
-
   types: Option[] = options;
 
   private _selectedType = '';
@@ -94,7 +95,7 @@ export class MeritListComponent {
         this._selectedStatus,
         this._selectedType
       );
-   
+
       this.merits = data;
       this.totalCount = count;
 

@@ -22,7 +22,7 @@
       >
         <mat-option value="">සියලුම</mat-option>
         <mat-option *ngFor="let t of types; let i = index" [value]="t.value">
-          {{i+1}}.{{ t.label }}
+          {{ i + 1 }}.{{ t.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -58,8 +58,7 @@
       <h1></h1>
       <h3 class="merit-title">{{ merit.title }}</h3>
       <p class="merit-description">
-        {{ merit.description | slice : 0 : 50
-        }}{{ merit.description.length > 50 ? "..." : "" }}
+        {{ merit.description | stripHtml | slice : 0 : 80 }}...
       </p>
       <p class="merit-date">{{ merit.date | date : "mediumDate" }}</p>
     </div>

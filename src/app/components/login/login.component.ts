@@ -71,40 +71,40 @@ export class LoginComponent {
     this.router.navigate(['/login']);
   }
 
-  // async onCreateUser() {
-  //   this.loading = true;
-  //   this.error = '';
-  //   this.success = '';
+  async onCreateUser() {
+    this.loading = true;
+    this.error = '';
+    this.success = '';
 
-  //   if (!this.userName || !this.password) {
-  //     this.error = 'Username and password are required';
-  //     this.loading = false;
-  //     return;
-  //   }
-  //   const userExists = await this.authService.userNameExits(this.userName);
-  //   if (userExists) {
-  //     this.error = 'Username already exists';
-  //     this.loading = false;
-  //     return;
-  //   }
+    if (!this.userName || !this.password) {
+      this.error = 'Username and password are required';
+      this.loading = false;
+      return;
+    }
+    const userExists = await this.authService.userNameExits(this.userName);
+    if (userExists) {
+      this.error = 'Username already exists';
+      this.loading = false;
+      return;
+    }
 
-  //   const error = await this.authService.createUser(
-  //     this.userName,
-  //     this.password
-  //   );
-  //   this.loading = false;
+    const error = await this.authService.createUser(
+      this.userName,
+      this.password
+    );
+    this.loading = false;
 
-  //   if (error) {
-  //     this.error = error;
-  //   } else {
-  //     this.success = 'User created successfully!';
-  //     localStorage.setItem('auth', 'true');
-  //     this.router.navigate(['/merits']);
-  //     setTimeout(() => {
-  //       this.success = '';
-  //     }, 1500);
-  //   }
-  // }
+    if (error) {
+      this.error = error;
+    } else {
+      this.success = 'User created successfully!';
+      localStorage.setItem('auth', 'true');
+      this.router.navigate(['/merits']);
+      setTimeout(() => {
+        this.success = '';
+      }, 1500);
+    }
+  }
 
   isUserExists(): boolean {
     return !!localStorage.getItem('auth');

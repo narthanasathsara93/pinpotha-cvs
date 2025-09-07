@@ -51,6 +51,7 @@ export class SupabaseService {
   ): Promise<{ error?: string }> {
     const { error } = await supabase.from(mertisTable).insert([merit]);
     if (error) {
+      console.error('Error inserting merit:', error.message);
       return { error: error.message };
     }
     this.clearCache();
